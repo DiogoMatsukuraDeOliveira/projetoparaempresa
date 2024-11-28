@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Funcionários</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Cadastro de Cambios</h1>
+
+    <!-- Formulário de Cadastro -->
+    <form id="dataForm">
+        <label for="name">Nome:</label>
+        <select id="name" required>
+            <option value="" disabled selected>Selecione o nome</option>
+            <option value="Tiozinho">Tiozinho</option>
+            <option value="Bruninho">Bruninho</option>
+            <option value="Benzema">Benzema</option>
+            <option value="Gabriel">Gabriel</option>
+            <option value="Alisson">Alisson</option>
+        </select>
+        <br>
+
+        <label for="model">Modelo:</label>
+        <select id="model" onchange="checkModel(this)" required>
+            <option value="" disabled selected>Selecione o modelo</option>
+            <option value="G5-1.6">G5 1.6</option>
+            <option value="Fire-1.4">Fire 1.4</option>
+            <option value="Fire-EVO">Fire Evo</option>
+            <option value="AP">AP</option>
+            <option value="Fusca">Fusca 8x31</option>
+            <option value="Outro">Outro</option>
+            <option value="Outro">Outro</option>
+        </select>
+        <br>
+
+        <div id="modelOther" style="display:none;">
+            <label for="modelOtherInput">Especifique o Modelo:</label>
+            <input type="text" id="modelOtherInput">
+        </div>
+
+        <label for="date">Data:</label>
+        <input type="date" id="date" required>
+        <br>
+
+        <label for="photo">Foto:</label>
+        <input type="file" id="photo" accept="image/*" required>
+        <br>
+
+        <button type="submit">Cadastrar</button>
+        <h1><a href="history.html">Acessar Histórico</a></h1>
+    </form>
+
+    <script src="index.js"></script>
+</body>
+</html>
