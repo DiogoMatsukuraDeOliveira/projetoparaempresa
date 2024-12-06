@@ -24,9 +24,7 @@ document.getElementById('enterBtn').addEventListener('click', function () {
     }
 });
 
-function filterHistory(userName = null) {
-    const nameFilter = document.getElementById('nameFilter').value;
-    const monthFilter = document.getElementById('monthFilter').value;
+function filterHistory(userName = null, nameFilter = null, monthFilter = null) {
     const history = JSON.parse(localStorage.getItem('history')) || [];
 
     const filteredHistory = history.filter(entry => {
@@ -101,8 +99,12 @@ window.editEntry = function (index) {
     if (newName && newModel && newDate) {
         history[index] = { ...entry, name: newName, model: newModel, date: newDate };
         localStorage.setItem('history', JSON.stringify(history));
-        filterHistory();
     }
+
+    const userName = document.getElementById('nameFilter').value;
+    const nameFilter = document.getElementById('nameFilter').value;
+    const monthFilter = document.getElementById('monthFilter').value;
+    filterHistory(userName !== 'admin' ? userName : null, nameFilter, monthFilter);
 };
 
 window.deleteEntry = function (index) {
@@ -110,8 +112,12 @@ window.deleteEntry = function (index) {
     if (confirm('Você tem certeza que deseja remover esta entrada?')) {
         history.splice(index, 1);
         localStorage.setItem('history', JSON.stringify(history));
-        filterHistory();
     }
+
+    const userName = document.getElementById('nameFilter').value;
+    const nameFilter = document.getElementById('nameFilter').value;
+    const monthFilter = document.getElementById('monthFilter').value;
+    filterHistory(userName !== 'admin' ? userName : null, nameFilter, monthFilter);
 };
 
 // Atualizar a lista de histórico ao mudar os filtros
