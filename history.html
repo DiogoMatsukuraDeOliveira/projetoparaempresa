@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histórico de Funcionários</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/history.css">
 </head>
 <body>
     <h1>Histórico de Funcionários</h1>
@@ -44,9 +44,11 @@
             <option value="11">Novembro</option>
             <option value="12">Dezembro</option>
         </select>
+
+        <button id="exportBtn">Exportar Histórico (JSON)</button>
     </div>
 
-    <!-- Conteúdo do Histórico (inicialmente oculto) -->
+    <!-- Conteúdo do Histórico -->
     <div id="historyContent" style="display:none;">
         <h2>Conteúdo do Histórico</h2>
         <div id="historyList"></div>
@@ -55,6 +57,6 @@
     <!-- Botão de Voltar -->
     <button id="backBtn" onclick="window.location.href='index.html'">Voltar</button>
 
-    <script src="history.js"></script>
+    <script src="javascript/history.js"></script>
 </body>
 </html>
