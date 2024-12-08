@@ -11,6 +11,17 @@ function checkModel(select) {
     }
 }
 
+// Função para preencher automaticamente o campo de data com a data atual
+function setDateToToday() {
+    const dateInput = document.getElementById('date');
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0]; // Formato yyyy-mm-dd
+    dateInput.value = formattedDate;
+}
+
+// Chame a função quando a página carregar
+window.onload = setDateToToday;
+
 function saveToLocalStorage(entry) {
     const history = JSON.parse(localStorage.getItem('history')) || [];
     history.push(entry);

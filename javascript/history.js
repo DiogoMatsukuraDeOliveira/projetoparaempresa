@@ -1,76 +1,72 @@
 const senhas = {
     '2231': 'admin',
     'tio2231': 'Tiozinho',
-    'bruninho2231': 'Bruninho',
-    'benzema2231': 'Benzema',
-    'gabriel2231': 'Gabriel',
-    'alisson2231': 'Alisson',
+    'bru2231': 'Bruninho',
+    'b2231': 'Benzema',
+    'g2231': 'Gabriel',
+    'a2231': 'Alisson',
 };
+
+let currentUser = null; // Variável global para armazenar o usuário logado
 
 document.getElementById('enterBtn').addEventListener('click', function () {
     const senha = document.getElementById('password').value;
     const nomeUsuario = senhas[senha];
 
     if (nomeUsuario) {
+        // Configurar o usuário logado
+        currentUser = nomeUsuario;
+
         // Exibir interface de histórico
         document.getElementById('passwordForm').style.display = 'none';
-        document.getElementById('filters').style.display = 'block';
+        document.getElementById('filters').style.display = 'block'; // Mostrar filtros
         document.getElementById('historyContent').style.display = 'block';
 
-        // Filtrar e exibir o histórico
-        filterHistory(nomeUsuario !== 'admin' ? nomeUsuario : null);
+        // Exibir os produtos dependendo do tipo de usuário
+        loadUserHistory();
     } else {
         alert('Senha incorreta!');
     }
 });
 
-function filterHistory(userName = null) {
-    const nameFilter = document.getElementById('nameFilter').value;
-    const monthFilter = document.getElementById('monthFilter').value;
+// Carregar os produtos do usuário logado ou todos os produtos se for admin
+function loadUserHistory() {
     const history = JSON.parse(localStorage.getItem('history')) || [];
 
+    // Obter os valores dos filtros
+    const monthFilter = document.getElementById('monthFilter').value;
+
+    // Filtrar o histórico com base no nome e mês
     const filteredHistory = history.filter(entry => {
-        const entryDate = new Date(entry.date);
-        const entryMonth = String(entryDate.getMonth() + 1).padStart(2, '0');
+        let match = true;
 
-        const matchesUser = userName ? entry.name === userName : true;
-        const matchesName = !nameFilter || entry.name === nameFilter;
-        const matchesMonth = !monthFilter || entryMonth === monthFilter;
+        // Filtra por mês, se fornecido
+        if (monthFilter) {
+            const entryMonth = entry.date.split('-')[1]; // Extrai o mês da data (assumindo formato YYYY-MM-DD)
+            if (entryMonth !== monthFilter) {
+                match = false;
+            }
+        }
 
-        return matchesUser && matchesName && matchesMonth;
+        return match;
     });
 
-    renderHistoryList(filteredHistory);
+    // Se for admin, exibe todos os produtos, caso contrário, filtra por usuário
+    const userHistory = currentUser === 'admin' ? filteredHistory : filteredHistory.filter(entry => entry.name === currentUser);
+
+    // Ordenar os produtos pelo modelo ou outro critério, se necessário
+    const sortedHistory = userHistory.sort((a, b) => a.model.localeCompare(b.model));
+
+    renderHistoryList(sortedHistory);
 }
 
-document.getElementById('exportBtn').addEventListener('click', function () {
-    const history = JSON.parse(localStorage.getItem('history')) || [];
-    if (history.length === 0) {
-        alert('Nenhum dado disponível para exportar!');
-        return;
-    }
-
-    // Criar o arquivo JSON
-    const jsonData = JSON.stringify(history, null, 2);
-    const blob = new Blob([jsonData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    // Criar um link para download
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'historico_com_fotos.json';
-    link.click();
-
-    // Liberar o objeto URL
-    URL.revokeObjectURL(url);
-});
-
+// Função para renderizar a lista de produtos
 function renderHistoryList(history) {
     const historyList = document.getElementById('historyList');
-    historyList.innerHTML = '';
+    historyList.innerHTML = ''; // Limpar a lista anterior
 
     if (history.length === 0) {
-        historyList.innerHTML = '<p>Nenhum dado encontrado com os filtros aplicados.</p>';
+        historyList.innerHTML = '<p>Nenhum produto encontrado.</p>';
     } else {
         history.forEach((entry, index) => {
             const entryDiv = document.createElement('div');
@@ -80,40 +76,11 @@ function renderHistoryList(history) {
                 <p>Modelo: ${entry.model}</p>
                 <p>Data: ${entry.date}</p>
                 <img src="${entry.photo}" alt="Foto" width="100">
-                <div class="action-buttons">
-                    <button class="edit-btn" onclick="editEntry(${index})">✏️</button>
-                    <button class="delete-btn" onclick="deleteEntry(${index})">❌</button>
-                </div>
             `;
             historyList.appendChild(entryDiv);
         });
     }
 }
 
-window.editEntry = function (index) {
-    const history = JSON.parse(localStorage.getItem('history')) || [];
-    const entry = history[index];
-
-    const newName = prompt('Digite o novo nome:', entry.name);
-    const newModel = prompt('Digite o novo modelo:', entry.model);
-    const newDate = prompt('Digite a nova data:', entry.date);
-
-    if (newName && newModel && newDate) {
-        history[index] = { ...entry, name: newName, model: newModel, date: newDate };
-        localStorage.setItem('history', JSON.stringify(history));
-        filterHistory();
-    }
-};
-
-window.deleteEntry = function (index) {
-    const history = JSON.parse(localStorage.getItem('history')) || [];
-    if (confirm('Você tem certeza que deseja remover esta entrada?')) {
-        history.splice(index, 1);
-        localStorage.setItem('history', JSON.stringify(history));
-        filterHistory();
-    }
-};
-
-// Atualizar a lista de histórico ao mudar os filtros
-document.getElementById('nameFilter').addEventListener('change', () => filterHistory());
-document.getElementById('monthFilter').addEventListener('change', () => filterHistory());
+// Atualizar histórico sempre que o filtro for alterado
+document.getElementById('monthFilter').addEventListener('change', loadUserHistory);
