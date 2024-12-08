@@ -161,3 +161,31 @@ button:hover {
 #backBtn:hover {
     background-color: #e53935;
 }
+
+#backBtn2 {
+    display: inline-block;
+    background-color: #f44336;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Espaçamento acima do botão */
+    width: auto;
+    text-align: center;
+}
+
+/* Alteração de cor ao passar o mouse */
+#backBtn2:hover {
+    background-color: #e53935;
+}
+
+/* Centraliza o botão na tela */
+#backBtn2-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 3px; /* Espaçamento acima do container */
+}
