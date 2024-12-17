@@ -46,3 +46,63 @@ img {
 #backButton:hover {
     color: #007BFF;
 }
+
+/* Estilo geral do botão de voltar */
+#backButton {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.3s, transform 0.3s; /* Transições para cor e transformação */
+    padding: 10px 15px; /* Adiciona espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+}
+
+/* Efeito ao passar o mouse sobre o botão */
+#backButton:hover {
+    color: #007BFF; /* Mudança na cor do texto */
+    transform: scale(1.1); /* Leve aumento de tamanho para dar um efeito de "clicável" */
+}
+
+/* Estilo do botão quando pressionado */
+#backButton:active {
+    transform: scale(1); /* Retorna ao tamanho original quando pressionado */
+}
+
+/* Adicionando uma sombra sutil ao botão */
+#backButton {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/*
+
+/* Estilo para a classe BackButton */
+.BackButton {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.3s, transform 0.3s; /* Transições para cor e transformação */
+    padding: 10px 15px; /* Adiciona espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+/* Efeito ao passar o mouse sobre o botão */
+.BackButton:hover {
+    color: #007BFF; /* Mudança na cor do texto */
+    transform: scale(1.1); /* Leve aumento de tamanho para dar um efeito de "clicável" */
+}
+
+/* Estilo do botão quando pressionado */
+.BackButton:active {
+    transform: scale(1); /* Retorna ao tamanho original quando pressionado */
+}

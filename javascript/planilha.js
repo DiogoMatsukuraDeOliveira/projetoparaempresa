@@ -35,8 +35,11 @@ function loadHistory() {
     const pageData = filteredHistory.slice(startIndex, endIndex);
 
     // Exibe os dados da página
-    pageData.forEach(entry => {
+    pageData.forEach((entry, index) => {
         const row = document.createElement('tr');
+
+        const idCell = document.createElement('td');
+        idCell.textContent = startIndex + index + 1; // ID numérico incremental
 
         const nameCell = document.createElement('td');
         nameCell.textContent = entry.name;
@@ -54,6 +57,7 @@ function loadHistory() {
         photoImage.style.width = '100px'; // Ajuste o tamanho da imagem
         photoCell.appendChild(photoImage);
 
+        row.appendChild(idCell);
         row.appendChild(nameCell);
         row.appendChild(modelCell);
         row.appendChild(dateCell);
@@ -86,6 +90,17 @@ document.getElementById('filterForm').addEventListener('submit', function (event
     currentPage = 1; // Volta para a primeira página ao aplicar filtros
     loadHistory();
 });
+
+function removeById() {
+    const removeId = parseInt(document.getElementById('removeId').value);
+    if (isNaN(removeId)) return;
+
+    let history = JSON.parse(localStorage.getItem('history')) || [];
+    history = history.filter((entry, index) => index + 1 !== removeId); // Remove pela posição no array (ID = index + 1)
+
+    localStorage.setItem('history', JSON.stringify(history));
+    loadHistory();
+}
 
 // Carrega os dados ao carregar a página
 window.onload = loadHistory;

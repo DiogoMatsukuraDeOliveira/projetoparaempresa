@@ -13,21 +13,15 @@
     <div id="passwordForm">
         <label for="password">Digite a senha para acessar o histórico:</label>
         <input type="password" id="password" required>
-        <button id="enterBtn">Entrar</button>
+        <!-- Div para os botões lado a lado -->
+        <div id="buttonContainer">
+            <button id="enterBtn">Entrar</button>
+            <button id="backBtn" onclick="window.location.href='index.html'">Voltar</button>
+        </div>
     </div>
 
     <!-- Filtros (visíveis depois de inserir a senha correta) -->
     <div id="filters" style="display:none;">
-        <label for="nameFilter">Filtrar por Nome:</label>
-        <select id="nameFilter">
-            <option value="">Selecione um nome</option>
-            <option value="Tiozinho">Tiozinho</option>
-            <option value="Bruninho">Bruninho</option>
-            <option value="Benzema">Benzema</option>
-            <option value="Gabriel">Gabriel</option>
-            <option value="Alisson">Alisson</option>
-        </select>
-
         <label for="monthFilter">Filtrar por Mês:</label>
         <select id="monthFilter">
             <option value="">Selecione o mês</option>
@@ -52,9 +46,7 @@
         <div id="historyList"></div>
     </div>
 
-    <!-- Botão de Voltar -->
-    <button id="backBtn" onclick="window.location.href='index.html'">Voltar</button>
-
     <script src="javascript/history.js"></script>
+    
 </body>
 </html>

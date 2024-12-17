@@ -5,39 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        /* Resetando margens e preenchimento */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilos gerais do body */
         body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: #f4f4f4;
             margin: 0;
         }
+
+        /* Estilos do contêiner de login */
         .login-container {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             border: 2px solid #ccc;
             border-radius: 10px;
-            background-color: #f9f9f9;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
         }
+
+        /* Estilos do título */
+        h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        /* Estilos dos campos de input */
         input {
-            padding: 10px;
-            margin: 10px;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            outline: none;
         }
-        button {
-            padding: 10px 20px;
+
+        input:focus {
+            border-color: #007bff;
+        }
+
+        /* Contêiner para os botões */
+        .button-container {
+            display: flex; /* Usando flexbox */
+            justify-content: center; /* Alinha os botões no centro */
+            gap: 10px; /* Espaço entre os botões */
+        }
+
+        /* Botões */
+        button, #backButton {
+            padding: 12px 20px;
             font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 120px;
+        }
+
+        button {
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
+
         button:hover {
             background-color: #0056b3;
+        }
+
+        #backButton {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        #backButton:hover {
+            background-color: #e53935;
         }
     </style>
 </head>
@@ -46,9 +102,10 @@
         <h2>Por favor, insira a senha para acessar a planilha</h2>
         <form id="loginForm">
             <input type="password" id="password" placeholder="Senha" required>
-            <br>
-            <button type="submit">Entrar</button>
-            <a id="backButton" href="index.html">&#8592; Voltar</a>
+            <div class="button-container">
+                <button id="enterBtn">Entrar</button>
+                <button type="button" id="backButton" onclick="window.location.href='index.html'">Voltar</button>
+            </div>
         </form>
     </div>
 

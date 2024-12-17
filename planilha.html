@@ -58,10 +58,18 @@
         </form>
     </div>
 
+    <!-- Remover por ID -->
+    <div id="removeById">
+        <label for="removeId">ID para remover:</label>
+        <input type="number" id="removeId" placeholder="ID">
+        <button onclick="removeById()">Remover</button>
+    </div>
+
     <!-- Tabela para exibição do histórico -->
     <table id="historyTable">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Nome</th>
                 <th>Modelo</th>
                 <th>Data</th>
