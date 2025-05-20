@@ -1,86 +1,94 @@
 const senhas = {
-    '2231': 'admin',
-    'tio2231': 'Tiozinho',
-    'bru2231': 'Bruninho',
-    'b2231': 'Benzema',
-    'g2231': 'Gabriel',
-    'a2231': 'Alisson',
+  '2231': 'admin',
+  'tio2231': 'Tiozinho',
+  'bru2231': 'Bruninho',
+  'b2231': 'Benzema',
+  'g2231': 'Gabriel',
+  'a2231': 'Alisson',
 };
+let currentUser = null;
 
-let currentUser = null; // Variável global para armazenar o usuário logado
+const backGlobal  = document.getElementById('globalBackBtn');
+const pwForm      = document.getElementById('passwordForm');
+const toggleCont  = document.getElementById('toggleFiltersContainer');
+const filters     = document.getElementById('filters');
+const historyCont = document.getElementById('historyContent');
+const toggleBtn   = document.getElementById('toggleFiltersBtn');
 
-document.getElementById('enterBtn').addEventListener('click', function () {
-    const senha = document.getElementById('password').value;
-    const nomeUsuario = senhas[senha];
+document.getElementById('enterBtn').addEventListener('click', () => {
+  const pw   = document.getElementById('password').value.trim();
+  const name = senhas[pw];
+  if (!name) {
+    alert('Senha incorreta!');
+    return;
+  }
+  currentUser = name;
 
-    if (nomeUsuario) {
-        // Configurar o usuário logado
-        currentUser = nomeUsuario;
+  // Exibe o botão global e esconde o form de senha
+  backGlobal.style.display       = 'block';
+  pwForm.style.display           = 'none';
+  toggleCont.style.display       = 'block';
+  historyCont.style.display      = 'block';
+  filters.style.display          = 'none';
+  toggleBtn.textContent          = 'Mostrar Filtros';
 
-        // Exibir interface de histórico
-        document.getElementById('passwordForm').style.display = 'none';
-        document.getElementById('filters').style.display = 'block'; // Mostrar filtros
-        document.getElementById('historyContent').style.display = 'block';
-
-        // Exibir os produtos dependendo do tipo de usuário
-        loadUserHistory();
+  // Toggle de filtros
+  toggleBtn.onclick = () => {
+    if (filters.style.display === 'flex') {
+      filters.style.display    = 'none';
+      toggleBtn.textContent    = 'Mostrar Filtros';
     } else {
-        alert('Senha incorreta!');
+      filters.style.display    = 'flex';
+      toggleBtn.textContent    = 'Ocultar Filtros';
     }
+  };
+
+  // Listeners de filtros
+  ['yearFilter','monthFilter','dayFilter','modelFilter']
+    .forEach(id => document.getElementById(id)
+      .addEventListener('change', loadUserHistory));
+
+  loadUserHistory();
 });
 
-// Carregar os produtos do usuário logado ou todos os produtos se for admin
 function loadUserHistory() {
-    const history = JSON.parse(localStorage.getItem('history')) || [];
+  const history = JSON.parse(localStorage.getItem('history')) || [];
+  const yf = document.getElementById('yearFilter').value;
+  const mf = document.getElementById('monthFilter').value;
+  const df = document.getElementById('dayFilter').value;
+  const mod= document.getElementById('modelFilter').value;
 
-    // Obter os valores dos filtros
-    const monthFilter = document.getElementById('monthFilter').value;
+  let filtered = history.filter(e => {
+    const [y,m,d] = e.date.split('-');
+    return (!yf || y===yf)
+        && (!mf || m===mf)
+        && (!df || d===df)
+        && (!mod|| e.model===mod);
+  });
 
-    // Filtrar o histórico com base no nome e mês
-    const filteredHistory = history.filter(entry => {
-        let match = true;
-
-        // Filtra por mês, se fornecido
-        if (monthFilter) {
-            const entryMonth = entry.date.split('-')[1]; // Extrai o mês da data (assumindo formato YYYY-MM-DD)
-            if (entryMonth !== monthFilter) {
-                match = false;
-            }
-        }
-
-        return match;
-    });
-
-    // Se for admin, exibe todos os produtos, caso contrário, filtra por usuário
-    const userHistory = currentUser === 'admin' ? filteredHistory : filteredHistory.filter(entry => entry.name === currentUser);
-
-    // Ordenar os produtos pelo modelo ou outro critério, se necessário
-    const sortedHistory = userHistory.sort((a, b) => a.model.localeCompare(b.model));
-
-    renderHistoryList(sortedHistory);
+  if (currentUser !== 'admin') {
+    filtered = filtered.filter(e => e.name === currentUser);
+  }
+  filtered.sort((a,b)=> a.model.localeCompare(b.model));
+  renderHistoryList(filtered);
 }
 
-// Função para renderizar a lista de produtos
-function renderHistoryList(history) {
-    const historyList = document.getElementById('historyList');
-    historyList.innerHTML = ''; // Limpar a lista anterior
-
-    if (history.length === 0) {
-        historyList.innerHTML = '<p>Nenhum produto encontrado.</p>';
-    } else {
-        history.forEach((entry, index) => {
-            const entryDiv = document.createElement('div');
-            entryDiv.classList.add('history-entry');
-            entryDiv.innerHTML = `
-                <p>Nome: ${entry.name}</p>
-                <p>Modelo: ${entry.model}</p>
-                <p>Data: ${entry.date}</p>
-                <img src="${entry.photo}" alt="Foto" width="100">
-            `;
-            historyList.appendChild(entryDiv);
-        });
-    }
+function renderHistoryList(list) {
+  const container = document.getElementById('historyList');
+  container.innerHTML = '';
+  if (list.length === 0) {
+    container.innerHTML = '<p>Nenhum item encontrado.</p>';
+    return;
+  }
+  list.forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'history-entry';
+    div.innerHTML = `
+      <p><strong>Nome:</strong> ${e.name}</p>
+      <p><strong>Modelo:</strong> ${e.model}</p>
+      <p><strong>Data:</strong> ${e.date}</p>
+      <img src="${e.photo}" alt="Foto">
+    `;
+    container.appendChild(div);
+  });
 }
-
-// Atualizar histórico sempre que o filtro for alterado
-document.getElementById('monthFilter').addEventListener('change', loadUserHistory);

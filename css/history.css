@@ -1,191 +1,165 @@
-/* Resetando algumas configurações padrão */
+/* ====== Variáveis e Reset ====== */
+:root {
+  --bg-light: #f4f4f4;
+  --bg-white: #ffffff;
+  --border: #ccc;
+  --text: #333;
+  --primary: #007bff;
+  --primary-dark: #0056b3;
+  --danger: #f44336;
+  --radius: 8px;
+  --font: Arial, sans-serif;
+}
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  background: var(--bg-light);
+  font-family: var(--font);
+  color: var(--text);
+}
+img, input, select, button {
+  max-width: 100%; display: block;
 }
 
-/* Estilo geral da página */
+/* ====== Container Principal ====== */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 20px;
+  padding: 16px;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
 }
-
-/* Título */
 h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+  font-size: 1.75rem; text-align: center; margin-bottom: 16px;
 }
 
-/* Estilo do formulário de senha */
+/* ====== Botão Voltar Global ====== */
+#globalBackBtn {
+  position: fixed;
+  top: 12px; left: 12px;
+  display: none; /* só após login */
+  background: var(--danger); color: #fff;
+  border: none; border-radius: var(--radius);
+  padding: 8px 12px; font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background 0.2s;
+}
+#globalBackBtn:hover {
+   background: var(--danger);
+  transform: translateX(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25)
+}
+
+/* ====== Formulário de Senha ====== */
 #passwordForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
+  background: var(--bg-white);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 100%; max-width: 360px;
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 16px;
 }
-
-#passwordForm label {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #555;
-}
-
+#passwordForm label { font-size: 1rem; }
 #passwordForm input {
-    padding: 12px;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
 }
-
-#passwordForm input:focus {
-    border-color: #007bff;
-}
-
-/* Estilo comum para todos os botões */
-button {
-    padding: 12px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Estilo para os filtros */
-#filters {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    margin-top: 20px;
-}
-
-#filters input,
-#filters select {
-    padding: 12px;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-}
-
-#filters input:focus,
-#filters select:focus {
-    border-color: #007bff;
-}
-
-/* Estilo para o conteúdo do histórico */
-#historyContent {
-    margin-top: 40px;
-    text-align: center;
-}
-
-/* Lista de histórico */
-#historyList {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-/* Estilo para cada entrada do histórico */
-.history-entry {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-/* Estilo para as informações dentro de cada entrada */
-.history-entry p {
-    margin: 5px 0;
-}
-
-.history-entry img {
-    margin-top: 10px;
-    border-radius: 4px;
-}
-
-/* Estilo para os botões de Entrar e Voltar ao lado um do outro */
-#passwordForm button,
-#backBtn {
-    margin: 10px;
-}
-
-/* Container para os botões "Entrar" e "Voltar" */
 #buttonContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 300px;
+  display: flex; gap: 12px;
 }
-
-/* Ajusta a largura dos botões para ficarem lado a lado */
-#passwordForm button,
 #backBtn {
-    width: 48%; /* Ajusta os botões para ocupar cerca de metade da largura cada */
+  flex: 1;
+  background: var(--danger); color: #fff;
+  border: none; border-radius: var(--radius);
+  padding: 12px; font-size: 1rem; font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+#backBtn:hover { background: var(--danger-dark); }
+#backBtn:active { transform: scale(0.98); }
+
+#enterBtn {
+  flex: 1;
+  background: var(--primary); color: #fff;
+  border: none; border-radius: var(--radius);
+  padding: 12px; font-size: 1rem; font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+#enterBtn:hover { background: var(--primary-dark); }
+#enterBtn:active { transform: scale(0.98); }
+
+/* ====== Toggle de Filtros ====== */
+#toggleFiltersContainer {
+  display: none; /* revelado pelo JS */
+  margin: 16px auto;
+}
+#toggleFiltersBtn {
+  background: var(--primary); color: #fff;
+  border: none; border-radius: var(--radius);
+  padding: 10px 20px; font-size: 1rem;
+  cursor: pointer; transition: background 0.2s;
+}
+#toggleFiltersBtn:hover { background: var(--primary-dark); }
+
+/* ====== Seção de Filtros ====== */
+#filters {
+  display: none; /* revelado pelo JS */
+  flex-direction: column; gap: 12px;
+  width: 100%; max-width: 360px;
+  margin: 0 auto;
+  background: var(--bg-white);
+  padding: 20px; border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  align-items: center;
+}
+#filters label { font-size: 1rem; }
+#filters select {
+  width: 100%; padding: 12px; font-size: 1rem;
+  border: 1px solid var(--border); border-radius: var(--radius);
 }
 
-/* Layout dos botões de Entrar e Voltar */
-#backBtn {
-    display: inline-block;
-    background-color: #f44336;
+/* ====== Conteúdo do Histórico ====== */
+#historyContent {
+  display: none; /* revelado pelo JS */
+  width: 100%; max-width: 800px;
+  margin: 24px auto;
+}
+#historyContent h2 {
+  text-align: center; margin-bottom: 16px;
 }
 
-#backBtn:hover {
-    background-color: #e53935;
+/* ====== Lista de Registros ====== */
+#historyList {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 0 16px;
+}
+.history-entry {
+  background: var(--bg-white);
+  width: 100%; max-width: 600px;
+  padding: 16px; border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex; flex-direction: column; align-items: center;
+}
+.history-entry p {
+  text-align: center; margin: 6px 0; font-size: 0.95rem;
+}
+.history-entry img {
+  margin-top: 8px; border-radius: 4px;
+  width: 100px; height: auto;
 }
 
-#backBtn2 {
-    display: inline-block;
-    background-color: #f44336;
-    padding: 12px 20px;
-    font-size: 16px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px; /* Espaçamento acima do botão */
-    width: auto;
-    text-align: center;
-}
-
-/* Alteração de cor ao passar o mouse */
-#backBtn2:hover {
-    background-color: #e53935;
-}
-
-/* Centraliza o botão na tela */
-#backBtn2-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 3px; /* Espaçamento acima do container */
+/* ====== Responsivo Desktop ====== */
+@media (min-width: 768px) {
+  h1 { font-size: 2rem; }
+  #passwordForm, #filters, #toggleFiltersContainer {
+    max-width: 480px;
+  }
+  #historyContent {
+    max-width: 800px;
+  }
 }
