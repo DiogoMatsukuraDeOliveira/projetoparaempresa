@@ -24,7 +24,10 @@ document.getElementById('enterBtn').addEventListener('click', () => {
   }
   currentUser = name;
 
-  // Exibe o botão global e esconde o form de senha
+  // 1) adiciona classe que centraliza 'topo'
+  document.body.classList.add('logged-in');
+
+  // 2) exibe o botão global e esconde o form de senha
   backGlobal.style.display       = 'block';
   pwForm.style.display           = 'none';
   toggleCont.style.display       = 'block';
@@ -32,7 +35,7 @@ document.getElementById('enterBtn').addEventListener('click', () => {
   filters.style.display          = 'none';
   toggleBtn.textContent          = 'Mostrar Filtros';
 
-  // Toggle de filtros
+  // toggle de filtros
   toggleBtn.onclick = () => {
     if (filters.style.display === 'flex') {
       filters.style.display    = 'none';
@@ -43,7 +46,7 @@ document.getElementById('enterBtn').addEventListener('click', () => {
     }
   };
 
-  // Listeners de filtros
+  // listeners de filtros
   ['yearFilter','monthFilter','dayFilter','modelFilter']
     .forEach(id => document.getElementById(id)
       .addEventListener('change', loadUserHistory));
@@ -63,7 +66,7 @@ function loadUserHistory() {
     return (!yf || y===yf)
         && (!mf || m===mf)
         && (!df || d===df)
-        && (!mod|| e.model===mod);
+        && (!mod || e.model===mod);
   });
 
   if (currentUser !== 'admin') {
@@ -76,7 +79,7 @@ function loadUserHistory() {
 function renderHistoryList(list) {
   const container = document.getElementById('historyList');
   container.innerHTML = '';
-  if (list.length === 0) {
+  if (!list.length) {
     container.innerHTML = '<p>Nenhum item encontrado.</p>';
     return;
   }

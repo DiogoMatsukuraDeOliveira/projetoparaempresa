@@ -23,14 +23,24 @@ img, input, select, button {
   max-width: 100%; display: block;
 }
 
-/* ====== Container Principal ====== */
+/* ====== Corpo da página ====== */
 body {
-  padding: 16px;
-  display: flex; flex-direction: column; align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* centraliza verticalmente no login */
+  padding: 0;
+  min-height: 100vh;
   position: relative;
 }
+body.logged-in {
+  justify-content: flex-start; /* após login, empilha do topo */
+  padding-top: 64px;           /* espaço para o botão global */
+}
 h1 {
-  font-size: 1.75rem; text-align: center; margin-bottom: 16px;
+  font-size: 1.75rem;
+  text-align: center;
+  margin-bottom: 16px;
 }
 
 /* ====== Botão Voltar Global ====== */
@@ -38,17 +48,18 @@ h1 {
   position: fixed;
   top: 12px; left: 12px;
   display: none; /* só após login */
-  background: var(--danger); color: #fff;
-  border: none; border-radius: var(--radius);
-  padding: 8px 12px; font-size: 1rem;
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 1rem;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   transition: background 0.2s;
 }
 #globalBackBtn:hover {
-   background: var(--danger);
-  transform: translateX(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25)
+  background: var(--danger);
 }
 
 /* ====== Formulário de Senha ====== */
@@ -73,9 +84,13 @@ h1 {
 }
 #backBtn {
   flex: 1;
-  background: var(--danger); color: #fff;
-  border: none; border-radius: var(--radius);
-  padding: 12px; font-size: 1rem; font-weight: bold;
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 }
@@ -84,9 +99,13 @@ h1 {
 
 #enterBtn {
   flex: 1;
-  background: var(--primary); color: #fff;
-  border: none; border-radius: var(--radius);
-  padding: 12px; font-size: 1rem; font-weight: bold;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 }
@@ -99,10 +118,14 @@ h1 {
   margin: 16px auto;
 }
 #toggleFiltersBtn {
-  background: var(--primary); color: #fff;
-  border: none; border-radius: var(--radius);
-  padding: 10px 20px; font-size: 1rem;
-  cursor: pointer; transition: background 0.2s;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 #toggleFiltersBtn:hover { background: var(--primary-dark); }
 
@@ -120,14 +143,15 @@ h1 {
 #filters label { font-size: 1rem; }
 #filters select {
   width: 100%; padding: 12px; font-size: 1rem;
-  border: 1px solid var(--border); border-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 /* ====== Conteúdo do Histórico ====== */
 #historyContent {
   display: none; /* revelado pelo JS */
   width: 100%; max-width: 800px;
-  margin: 24px auto;
+  margin: 24px auto 0;
 }
 #historyContent h2 {
   text-align: center; margin-bottom: 16px;
