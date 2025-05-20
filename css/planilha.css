@@ -1,108 +1,220 @@
+:root {
+  --primary: #007bff;
+  --primary-dark: #0056b3;
+  --danger: #dc3545;
+  --danger-dark: #a71d2a;
+  --light: #f8f9fa;
+  --bg: #ffffff;
+  --border: #dee2e6;
+  --text: #212529;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+  background: var(--light);
+  font-family: Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 80px auto 40px;
+  background: var(--bg);
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 h1 {
-    text-align: center;
+  text-align: center;
+  margin-bottom: 24px;
+  font-weight: bold;
+}
+
+/* Cartões para filtros e remoção */
+.card {
+  background: var(--bg);
+  padding: 16px;
+  margin-bottom: 24px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* Estilo dos filtros */
+#filters form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+#filters label {
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+#filters select,
+#filters input {
+  flex: 1 1 120px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+#filters button {
+  padding: 10px 18px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+#filters button:hover {
+  background: var(--primary-dark);
+}
+
+/* Estilo remover por ID */
+#removeById {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+#removeById input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+#removeById button {
+  padding: 10px 18px;
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+#removeById button:hover {
+  background: var(--danger-dark);
+}
+
+/* Tabela */
+.table-wrapper {
+  overflow-x: auto;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  /* separa as células permitindo espaçamento */
+  border-collapse: separate;
+  /* 0 horizonta l e 8px vertical entre as linhas */
+  border-spacing: 0 8px;
+  margin-top: 20px;
 }
 
-table, th, td {
-    border: 1px solid #ccc;
-}
-
+/* aplica borda em todas as células */
 th, td {
-    padding: 10px;
-    text-align: left;
+  border: 2px solid var(--border);
+  padding: 10px;
+  text-align: left;
+  background: var(--bg);
 }
 
-th {
-    background-color: #f4f4f4;
+/* cabeçalho com fundo próprio */
+thead th {
+  background-color: #f4f4f4;
 }
 
-img {
-    max-width: 100px;
-    height: auto;
+tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.02);
 }
 
+tbody tr:hover {
+  background: rgba(0, 123, 255, 0.05);
+}
+
+td img {
+  display: block;
+  max-width: 80px;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Paginação */
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+#pagination button {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#pagination button:hover {
+  background: var(--light);
+}
+
+#pagination #pageNumber {
+  font-weight: 600;
+}
+
+/* Botão de voltar destacado */
 #backButton {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: #000;
-    transition: color 0.3s;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+  z-index: 1000;
 }
 
+/* Ícone de seta antes do texto */
+#backButton::before {
+  content: "←";
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Hover mais evidente */
 #backButton:hover {
-    color: #007BFF;
+  background: var(--primary-dark);
+  transform: translateX(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-/* Estilo geral do botão de voltar */
-#backButton {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: #000;
-    transition: color 0.3s, transform 0.3s; /* Transições para cor e transformação */
-    padding: 10px 15px; /* Adiciona espaçamento interno */
-    border-radius: 5px; /* Bordas arredondadas */
-}
-
-/* Efeito ao passar o mouse sobre o botão */
-#backButton:hover {
-    color: #007BFF; /* Mudança na cor do texto */
-    transform: scale(1.1); /* Leve aumento de tamanho para dar um efeito de "clicável" */
-}
-
-/* Estilo do botão quando pressionado */
-#backButton:active {
-    transform: scale(1); /* Retorna ao tamanho original quando pressionado */
-}
-
-/* Adicionando uma sombra sutil ao botão */
-#backButton {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/*
-
-/* Estilo para a classe BackButton */
-.BackButton {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: #000;
-    transition: color 0.3s, transform 0.3s; /* Transições para cor e transformação */
-    padding: 10px 15px; /* Adiciona espaçamento interno */
-    border-radius: 5px; /* Bordas arredondadas */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-}
-
-/* Efeito ao passar o mouse sobre o botão */
-.BackButton:hover {
-    color: #007BFF; /* Mudança na cor do texto */
-    transform: scale(1.1); /* Leve aumento de tamanho para dar um efeito de "clicável" */
-}
-
-/* Estilo do botão quando pressionado */
-.BackButton:active {
-    transform: scale(1); /* Retorna ao tamanho original quando pressionado */
+/* Foco (acessibilidade) */
+#backButton:focus {
+  outline: 3px solid rgba(0, 123, 255, 0.5);
+  outline-offset: 2px;
 }

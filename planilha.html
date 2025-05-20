@@ -1,93 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Cambios</title>
-    <link rel="stylesheet" href="css/planilha.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Histórico de Cambios</title>
+  <link rel="stylesheet" href="css/planilha.css"/>
 </head>
 <body>
-    <a id="backButton" href="index.html">&#8592; Voltar</a>
+  <a id="backButton" href="index.html" aria-label="Voltar para a página anterior">Voltar</a>
+  
+  <div class="container">
     <h1>Histórico de Cambios</h1>
-    
-    <!-- Filtros -->
-    <div id="filters">
-        <form id="filterForm">
-            <label for="filterName">Nome:</label>
-            <select id="filterName">
-                <option value="">Todos</option>
-                <option value="Tiozinho">Tiozinho</option>
-                <option value="Bruninho">Bruninho</option>
-                <option value="Benzema">Benzema</option>
-                <option value="Gabriel">Gabriel</option>
-                <option value="Alisson">Alisson</option>
-            </select>
 
-            <label for="filterModel">Modelo:</label>
-            <select id="filterModel">
-                <option value="">Todos</option>
-                <option value="G5-1.6">G5 1.6</option>
-                <option value="Fire-1.4">Fire 1.4</option>
-                <option value="Fire-EVO">Fire Evo</option>
-                <option value="AP">AP</option>
-                <option value="Fusca">Fusca 8x31</option>
-                <option value="Outro">Outro</option>
-            </select>
+    <section class="card" id="filters">
+      <form id="filterForm">
+        <label for="filterName">Nome:</label>
+        <select id="filterName">
+          <option value="">Todos</option>
+          <option value="Tiozinho">Tiozinho</option>
+          <option value="Bruninho">Bruninho</option>
+          <option value="Benzema">Benzema</option>
+          <option value="Gabriel">Gabriel</option>
+          <option value="Alisson">Alisson</option>
+        </select>
 
-            <label for="filterMonth">Mês:</label>
-            <select id="filterMonth">
-                <option value="">Todos</option>
-                <option value="01">Janeiro</option>
-                <option value="02">Fevereiro</option>
-                <option value="03">Março</option>
-                <option value="04">Abril</option>
-                <option value="05">Maio</option>
-                <option value="06">Junho</option>
-                <option value="07">Julho</option>
-                <option value="08">Agosto</option>
-                <option value="09">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
-            </select>
+        <label for="filterModel">Modelo:</label>
+        <select id="filterModel">
+          <option value="">Todos</option>
+          <option value="G5-1.6">G5 1.6</option>
+          <option value="Fire-1.4">Fire 1.4</option>
+          <option value="Fire-EVO">Fire Evo</option>
+          <option value="AP">AP</option>
+          <option value="Fusca">Fusca 8x31</option>
+          <option value="Outro">Outro</option>
+        </select>
 
-            <label for="filterYear">Ano:</label>
-            <input type="number" id="filterYear" placeholder="Ano" min="2000" max="2100">
+        <label for="filterMonth">Mês:</label>
+        <select id="filterMonth">
+          <option value="">Todos</option>
+          <option value="01">Janeiro</option>
+          <option value="02">Fevereiro</option>
+          <option value="03">Março</option>
+          <option value="04">Abril</option>
+          <option value="05">Maio</option>
+          <option value="06">Junho</option>
+          <option value="07">Julho</option>
+          <option value="08">Agosto</option>
+          <option value="09">Setembro</option>
+          <option value="10">Outubro</option>
+          <option value="11">Novembro</option>
+          <option value="12">Dezembro</option>
+        </select>
 
-            <button type="submit">Filtrar</button>
-        </form>
-    </div>
+        <label for="filterYear">Ano:</label>
+        <input type="number" id="filterYear" placeholder="Ano" min="2000" max="2100"/>
 
-    <!-- Remover por ID -->
-    <div id="removeById">
-        <label for="removeId">ID para remover:</label>
-        <input type="number" id="removeId" placeholder="ID">
-        <button onclick="removeById()">Remover</button>
-    </div>
+        <button type="submit">Filtrar</button>
+      </form>
+    </section>
 
-    <!-- Tabela para exibição do histórico -->
+    <section class="card" id="removeById">
+      <label for="removeId">ID para remover:</label>
+      <input type="number" id="removeId" placeholder="ID"/>
+      <button onclick="removeById()">Remover</button>
+    </section>
+
     <table id="historyTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Modelo</th>
-                <th>Data</th>
-                <th>Foto</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dados do histórico serão preenchidos aqui -->
-        </tbody>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Modelo</th>
+          <th>Data</th>
+          <th>Foto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dados do histórico serão preenchidos via JavaScript -->
+      </tbody>
     </table>
 
-    <!-- Controles de paginação -->
     <div id="pagination">
-        <button id="prevPage" onclick="changePage('prev')">Anterior</button>
-        <span id="pageNumber">Página 1</span>
-        <button id="nextPage" onclick="changePage('next')">Próxima</button>
+      <button id="prevPage" onclick="changePage('prev')">Anterior</button>
+      <span id="pageNumber">Página 1</span>
+      <button id="nextPage" onclick="changePage('next')">Próxima</button>
     </div>
+  </div>
 
-    <script src="javascript/planilha.js"></script>
+  <script src="javascript/planilha.js"></script>
 </body>
 </html>
