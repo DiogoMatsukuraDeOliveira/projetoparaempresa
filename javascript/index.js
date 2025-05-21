@@ -1,21 +1,23 @@
-// Mostra/esconde o "Outro" e aplica required dinamicamente
+// Confirma carregamento
+console.log('index.js carregado');
+
+// Show/hide "Outro" field
 function checkModel(select) {
-  const modelOtherDiv = document.getElementById('modelOther');
-  const modelOtherInput = document.getElementById('modelOtherInput');
+  const otherDiv = document.getElementById('modelOther');
+  const otherInput = document.getElementById('modelOtherInput');
   if (select.value === 'Outro') {
-    modelOtherDiv.style.display = 'block';
-    modelOtherInput.setAttribute('required', '');
+    otherDiv.style.display = 'block';
+    otherInput.setAttribute('required', '');
   } else {
-    modelOtherDiv.style.display = 'none';
-    modelOtherInput.removeAttribute('required');
+    otherDiv.style.display = 'none';
+    otherInput.removeAttribute('required');
   }
 }
 
-// Preenche o campo de data com a data de hoje
+// Preenche data de hoje
 function setDateToToday() {
   const dateInput = document.getElementById('date');
-  const today = new Date();
-  dateInput.value = today.toISOString().split('T')[0];
+  dateInput.value = new Date().toISOString().split('T')[0];
 }
 
 // Salva no localStorage
@@ -25,10 +27,8 @@ function saveToLocalStorage(entry) {
   localStorage.setItem('history', JSON.stringify(history));
 }
 
-// Lida com o envio do formulário
-function handleFormSubmit(event) {
-  event.preventDefault();
-
+// Lida com clique em Cadastrar
+function handleFormSubmit() {
   const name = document.getElementById('name').value;
   const modelSelect = document.getElementById('model').value;
   const model = modelSelect === 'Outro'
@@ -37,27 +37,28 @@ function handleFormSubmit(event) {
   const date = document.getElementById('date').value;
   const photoFile = document.getElementById('photo').files[0];
 
-  if (name && model && date && photoFile) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      saveToLocalStorage({ name, model, date, photo: e.target.result });
-      alert('Dados salvos no histórico com sucesso!');
-      document.getElementById('dataForm').reset();
-      document.getElementById('modelOther').style.display = 'none';
-    };
-    reader.readAsDataURL(photoFile);
+  if (!name || !model || !date || !photoFile) {
+    alert('Preencha todos os campos e selecione uma foto.');
+    return;
   }
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    saveToLocalStorage({ name, model, date, photo: e.target.result });
+    alert('Dados salvos com sucesso!');
+    document.getElementById('dataForm').reset();
+    document.getElementById('modelOther').style.display = 'none';
+  };
+  reader.readAsDataURL(photoFile);
 }
 
-// Espera o DOM estar pronto para registrar eventos
+// Setup initial events
 document.addEventListener('DOMContentLoaded', () => {
   setDateToToday();
-
-  // Change listener para o select de modelo
   document.getElementById('model')
     .addEventListener('change', e => checkModel(e.target));
-
-  // Listener de submit
-  document.getElementById('dataForm')
-    .addEventListener('submit', handleFormSubmit);
+  document.getElementById('submitBtn')
+    .addEventListener('click', handleFormSubmit);
+  document.getElementById('historyBtn')
+    .addEventListener('click', () => window.location.href = '/history.html');
 });

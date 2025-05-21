@@ -9,26 +9,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <!-- CSS -->
-  <link rel="stylesheet" href="./css/styles.css">
-  <!-- JS com defer garante que o DOM já exista antes de executar -->
-  <script src="./javascript/index.js" defer></script>
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- JS com defer -->
+  <script src="/javascript/index.js" defer></script>
 </head>
 <body>
   <div class="container">
     <header class="header">
       <div class="topo-icone">
-        <a href="admin.html">
-          <img src="img/icons8-administrador-masculino-50.png" alt="Administrador">
+        <a href="/admin.html">
+          <img src="/img/icons8-administrador-masculino-50.png" alt="Administrador">
         </a>
       </div>
       <h1>Cadastro de Cambios</h1>
     </header>
     <main>
+      <!-- Formulário -->
       <section class="card">
-        <form id="dataForm" class="form-grid">
+        <form id="dataForm" class="form-grid" novalidate>
           <div class="form-group">
             <label for="name">Nome</label>
-            <select id="name" required>
+            <select id="name">
               <option value="" disabled selected>Selecione o nome</option>
               <option value="Tiozinho">Tiozinho</option>
               <option value="Bruninho">Bruninho</option>
@@ -39,7 +40,7 @@
           </div>
           <div class="form-group">
             <label for="model">Modelo</label>
-            <select id="model" required>
+            <select id="model">
               <option value="" disabled selected>Selecione o modelo</option>
               <option value="G5-1.6">G5 1.6</option>
               <option value="Fire-1.4">Fire 1.4</option>
@@ -55,18 +56,15 @@
           </div>
           <div class="form-group">
             <label for="date">Data</label>
-            <input type="date" id="date" required>
+            <input type="date" id="date">
           </div>
           <div class="form-group">
             <label for="photo">Foto</label>
-            <input type="file" id="photo" accept="image/*" required>
+            <input type="file" id="photo" accept="image/*" capture>
           </div>
           <div class="form-actions form-group-full">
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
-            <button type="button" class="btn btn-secondary history-btn"
-                    onclick="location.href='history.html'">
-              Acessar Histórico
-            </button>
+            <button type="button" id="submitBtn" class="btn btn-primary">Cadastrar</button>
+            <button type="button" id="historyBtn" class="btn btn-secondary">Acessar Histórico</button>
           </div>
         </form>
       </section>

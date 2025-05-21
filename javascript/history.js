@@ -72,7 +72,10 @@ function loadUserHistory() {
   if (currentUser !== 'admin') {
     filtered = filtered.filter(e => e.name === currentUser);
   }
-  filtered.sort((a,b)=> a.model.localeCompare(b.model));
+
+  // Inverte a lista para que a última inserção apareça primeiro
+  filtered.reverse();
+
   renderHistoryList(filtered);
 }
 
@@ -94,4 +97,39 @@ function renderHistoryList(list) {
     `;
     container.appendChild(div);
   });
+}
+
+function renderHistoryList(list) {
+  const container = document.getElementById('historyList');
+  container.innerHTML = '';
+
+  if (!list.length) {
+    container.innerHTML = '<p>Nenhum item encontrado.</p>';
+    return;
+  }
+
+  // 1) Label de mais recente
+  const recentLabel = document.createElement('div');
+  recentLabel.className = 'history-label';
+  recentLabel.innerHTML = '&#9650; Mais recente';  // ▲
+  container.appendChild(recentLabel);
+
+  // 2) Cada entrada
+  list.forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'history-entry';
+    div.innerHTML = `
+      <p><strong>Nome:</strong> ${e.name}</p>
+      <p><strong>Modelo:</strong> ${e.model}</p>
+      <p><strong>Data:</strong> ${e.date}</p>
+      <img src="${e.photo}" alt="Foto">
+    `;
+    container.appendChild(div);
+  });
+
+  // 3) Label de mais antiga
+  const oldestLabel = document.createElement('div');
+  oldestLabel.className = 'history-label';
+  oldestLabel.innerHTML = '▼ Mais antiga';  // ▼
+  container.appendChild(oldestLabel);
 }
