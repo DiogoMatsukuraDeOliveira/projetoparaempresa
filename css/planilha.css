@@ -11,15 +11,13 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
 }
 
 body {
   background: var(--light);
   font-family: Arial, sans-serif;
   color: var(--text);
-  line-height: 1.5;
 }
 
 .container {
@@ -37,7 +35,6 @@ h1 {
   font-weight: bold;
 }
 
-/* Cartões para filtros e remoção */
 .card {
   background: var(--bg);
   padding: 16px;
@@ -46,7 +43,6 @@ h1 {
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
-/* Estilo dos filtros */
 #filters form {
   display: flex;
   flex-wrap: wrap;
@@ -77,12 +73,10 @@ h1 {
   font-weight: 600;
   transition: background 0.3s;
 }
-
 #filters button:hover {
   background: var(--primary-dark);
 }
 
-/* Estilo remover por ID */
 #removeById {
   display: flex;
   gap: 12px;
@@ -106,34 +100,27 @@ h1 {
   font-weight: 600;
   transition: background 0.3s;
 }
-
 #removeById button:hover {
   background: var(--danger-dark);
 }
 
-/* Tabela */
 .table-wrapper {
   overflow-x: auto;
 }
 
 table {
   width: 100%;
-  /* separa as células permitindo espaçamento */
   border-collapse: separate;
-  /* 0 horizonta l e 8px vertical entre as linhas */
   border-spacing: 0 8px;
   margin-top: 20px;
 }
 
-/* aplica borda em todas as células */
 th, td {
   border: 2px solid var(--border);
   padding: 10px;
-  text-align: left;
   background: var(--bg);
 }
 
-/* cabeçalho com fundo próprio */
 thead th {
   background-color: #f4f4f4;
 }
@@ -153,7 +140,18 @@ td img {
   border-radius: 4px;
 }
 
-/* Paginação */
+/* centraliza o checkbox na coluna */
+#historyTable td:last-child {
+  text-align: center;
+}
+
+.warranty-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
 #pagination {
   display: flex;
   justify-content: center;
@@ -170,7 +168,6 @@ td img {
   cursor: pointer;
   transition: background 0.2s;
 }
-
 #pagination button:hover {
   background: var(--light);
 }
@@ -179,42 +176,33 @@ td img {
   font-weight: 600;
 }
 
-/* Botão de voltar destacado */
 #backButton {
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: 20px; left: 20px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: var(--primary);
   color: #fff;
-  font-size: 16px;
   font-weight: 700;
   padding: 12px 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   text-decoration: none;
   transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
   z-index: 1000;
 }
-
-/* Ícone de seta antes do texto */
 #backButton::before {
   content: "←";
   font-size: 18px;
   line-height: 1;
 }
-
-/* Hover mais evidente */
 #backButton:hover {
   background: var(--primary-dark);
   transform: translateX(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
-
-/* Foco (acessibilidade) */
 #backButton:focus {
-  outline: 3px solid rgba(0, 123, 255, 0.5);
+  outline: 3px solid rgba(0,123,255,0.5);
   outline-offset: 2px;
 }

@@ -1,106 +1,108 @@
-let currentPage = 1; // Página atual
-const entriesPerPage = 5; // Número de entradas por página
+// javascript/planilha.js
+
+let currentPage = 1;
+const entriesPerPage = 5;
 
 function loadHistory() {
-    const history = JSON.parse(localStorage.getItem('history')) || [];
-    const tableBody = document.querySelector('#historyTable tbody');
-    const filterName = document.getElementById('filterName').value;
-    const filterModel = document.getElementById('filterModel').value;
-    const filterMonth = document.getElementById('filterMonth').value;
-    const filterYear = document.getElementById('filterYear').value;
+  // recupera o histórico e anexa o índice original a cada item
+  let history = JSON.parse(localStorage.getItem('history')) || [];
+  const indexed = history.map((entry, idx) => ({ ...entry, __idx: idx }));
 
-    // Limpa a tabela antes de adicionar os dados
-    tableBody.innerHTML = '';
+  // lê filtros
+  const nameVal  = document.getElementById('filterName').value;
+  const modelVal = document.getElementById('filterModel').value;
+  const dayVal   = document.getElementById('filterDay').value;
+  const monthVal = document.getElementById('filterMonth').value;
+  const yearVal  = document.getElementById('filterYear').value;
 
-    // Filtra os dados com base nos filtros selecionados
-    const filteredHistory = history.filter(entry => {
-        const entryDate = new Date(entry.date);
-        const entryMonth = String(entryDate.getMonth() + 1).padStart(2, '0');
-        const entryYear = entryDate.getFullYear();
+  const fDay   = dayVal   ? parseInt(dayVal,   10) : null;
+  const fMonth = monthVal ? parseInt(monthVal, 10) : null;
+  const fYear  = yearVal  ? parseInt(yearVal,  10) : null;
 
-        const matchesName = filterName ? entry.name === filterName : true;
-        const matchesModel = filterModel ? entry.model === filterModel : true;
-        const matchesMonth = filterMonth ? entryMonth === filterMonth : true;
-        const matchesYear = filterYear ? entryYear == filterYear : true;
+  // aplica filtros
+  const filtered = indexed.filter(item => {
+    const [yStr, mStr, dStr] = item.date.split('-');
+    const y = parseInt(yStr,10), m = parseInt(mStr,10), d = parseInt(dStr,10);
 
-        return matchesName && matchesModel && matchesMonth && matchesYear;
+    const okName  = nameVal  ? item.name  === nameVal  : true;
+    const okModel = modelVal ? item.model === modelVal : true;
+    const okDay   = fDay   ? d === fDay   : true;
+    const okMonth = fMonth ? m === fMonth : true;
+    const okYear  = fYear  ? y === fYear  : true;
+    return okName && okModel && okDay && okMonth && okYear;
+  });
+
+  // paginação
+  const totalPages = Math.max(1, Math.ceil(filtered.length / entriesPerPage));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  const start = (currentPage - 1) * entriesPerPage;
+  const pageData = filtered.slice(start, start + entriesPerPage);
+
+  // renderiza
+  const tableBody = document.querySelector('#historyTable tbody');
+  tableBody.innerHTML = '';
+  pageData.forEach((item, idx) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${start + idx + 1}</td>
+      <td>${item.name}</td>
+      <td>${item.model}</td>
+      <td>${item.date}</td>
+      <td><img src="${item.photo}" alt="Foto do Cambio" style="width:100px"/></td>
+      <td><input type="checkbox" class="warranty-checkbox" /></td>
+    `;
+    // configura checkbox de garantia
+    const checkbox = tr.querySelector('.warranty-checkbox');
+    // marca se já estava salvo
+    checkbox.checked = !!item.warranty;
+    // ao mudar, salva no localStorage
+    checkbox.addEventListener('change', () => {
+      history[item.__idx].warranty = checkbox.checked;
+      localStorage.setItem('history', JSON.stringify(history));
     });
 
-    // Calcula o número total de páginas
-    const totalPages = Math.ceil(filteredHistory.length / entriesPerPage);
+    tableBody.appendChild(tr);
+  });
 
-    // Exibe os dados da página atual
-    const startIndex = (currentPage - 1) * entriesPerPage;
-    const endIndex = startIndex + entriesPerPage;
-    const pageData = filteredHistory.slice(startIndex, endIndex);
-
-    // Exibe os dados da página
-    pageData.forEach((entry, index) => {
-        const row = document.createElement('tr');
-
-        const idCell = document.createElement('td');
-        idCell.textContent = startIndex + index + 1; // ID numérico incremental
-
-        const nameCell = document.createElement('td');
-        nameCell.textContent = entry.name;
-
-        const modelCell = document.createElement('td');
-        modelCell.textContent = entry.model;
-
-        const dateCell = document.createElement('td');
-        dateCell.textContent = entry.date;
-
-        const photoCell = document.createElement('td');
-        const photoImage = document.createElement('img');
-        photoImage.src = entry.photo;
-        photoImage.alt = 'Foto do Cambio';
-        photoImage.style.width = '100px'; // Ajuste o tamanho da imagem
-        photoCell.appendChild(photoImage);
-
-        row.appendChild(idCell);
-        row.appendChild(nameCell);
-        row.appendChild(modelCell);
-        row.appendChild(dateCell);
-        row.appendChild(photoCell);
-
-        tableBody.appendChild(row);
-    });
-
-    // Atualiza a exibição da página
-    document.getElementById('pageNumber').textContent = `Página ${currentPage} de ${totalPages}`;
-
-    // Desabilita o botão de próxima página se estiver na última página
-    document.getElementById('nextPage').disabled = currentPage === totalPages;
-
-    // Desabilita o botão de página anterior se estiver na primeira página
-    document.getElementById('prevPage').disabled = currentPage === 1;
+  // atualiza controles
+  document.getElementById('pageNumber').textContent =
+    `Página ${currentPage} de ${totalPages}`;
+  document.getElementById('prevPage').disabled = currentPage === 1;
+  document.getElementById('nextPage').disabled = currentPage === totalPages;
 }
 
 function changePage(direction) {
-    if (direction === 'next') {
-        currentPage++;
-    } else if (direction === 'prev') {
-        currentPage--;
-    }
-    loadHistory();
+  if (direction === 'next') currentPage++;
+  else if (direction === 'prev') currentPage--;
+  loadHistory();
 }
-
-document.getElementById('filterForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    currentPage = 1; // Volta para a primeira página ao aplicar filtros
-    loadHistory();
-});
 
 function removeById() {
-    const removeId = parseInt(document.getElementById('removeId').value);
-    if (isNaN(removeId)) return;
+  const id = parseInt(document.getElementById('removeId').value, 10);
+  if (isNaN(id)) return;
+  let history = JSON.parse(localStorage.getItem('history')) || [];
+  history = history.filter((_, i) => i + 1 !== id);
+  localStorage.setItem('history', JSON.stringify(history));
 
-    let history = JSON.parse(localStorage.getItem('history')) || [];
-    history = history.filter((entry, index) => index + 1 !== removeId); // Remove pela posição no array (ID = index + 1)
-
-    localStorage.setItem('history', JSON.stringify(history));
-    loadHistory();
+  const maxPages = Math.max(1, Math.ceil(history.length / entriesPerPage));
+  if (currentPage > maxPages) currentPage = maxPages;
+  loadHistory();
 }
 
-// Carrega os dados ao carregar a página
+// eventos
+document.getElementById('filterForm').addEventListener('submit', e => {
+  e.preventDefault();
+  currentPage = 1;
+  loadHistory();
+});
+['filterName','filterModel','filterDay','filterMonth','filterYear'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    currentPage = 1;
+    loadHistory();
+  });
+});
+document.getElementById('prevPage').addEventListener('click', () => changePage('prev'));
+document.getElementById('nextPage').addEventListener('click', () => changePage('next'));
+
 window.onload = loadHistory;

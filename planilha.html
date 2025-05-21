@@ -35,6 +35,42 @@
           <option value="Outro">Outro</option>
         </select>
 
+        <label for="filterDay">Dia:</label>
+        <select id="filterDay">
+          <option value="">Todos</option>
+          <option value="01">1</option>
+          <option value="02">2</option>
+          <option value="03">3</option>
+          <option value="04">4</option>
+          <option value="05">5</option>
+          <option value="06">6</option>
+          <option value="07">7</option>
+          <option value="08">8</option>
+          <option value="09">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="21">21</option>
+          <option value="22">22</option>
+          <option value="23">23</option>
+          <option value="24">24</option>
+          <option value="25">25</option>
+          <option value="26">26</option>
+          <option value="27">27</option>
+          <option value="28">28</option>
+          <option value="29">29</option>
+          <option value="30">30</option>
+          <option value="31">31</option>
+        </select>
+
         <label for="filterMonth">Mês:</label>
         <select id="filterMonth">
           <option value="">Todos</option>
@@ -65,25 +101,28 @@
       <button onclick="removeById()">Remover</button>
     </section>
 
-    <table id="historyTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Modelo</th>
-          <th>Data</th>
-          <th>Foto</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Dados do histórico serão preenchidos via JavaScript -->
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Modelo</th>
+            <th>Data</th>
+            <th>Foto</th>
+            <th>Garantia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dados preenchidos via JS -->
+        </tbody>
+      </table>
+    </div>
 
     <div id="pagination">
-      <button id="prevPage" onclick="changePage('prev')">Anterior</button>
+      <button id="prevPage">Anterior</button>
       <span id="pageNumber">Página 1</span>
-      <button id="nextPage" onclick="changePage('next')">Próxima</button>
+      <button id="nextPage">Próxima</button>
     </div>
   </div>
 
