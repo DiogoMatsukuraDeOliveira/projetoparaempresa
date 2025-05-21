@@ -1,18 +1,21 @@
 /* Reset básico e fonte */
 html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   background-color: #f9f9f9;
   color: #333;
+  display: flex;
+  align-items: center;    /* centra verticalmente */
+  justify-content: center;/* centra horizontalmente */
 }
 
 /* Container centralizado */
 .container {
   width: 95%;
   max-width: 500px;
-  margin: 20px auto;
   padding: 20px;
 }
 
@@ -97,23 +100,35 @@ input:focus {
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s;
 }
 
 .btn-primary {
   background-color: #007bff;
   color: white;
 }
-.btn-primary:hover {
-  background-color: #0056b3;
+
+.btn-primary:hover,
+.btn-primary:focus {
+  filter: brightness(0.9);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
 }
 
 .btn-secondary {
   background-color: #4caf50;
   color: white;
 }
-.btn-secondary:hover {
-  background-color: #388e3c;
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  filter: brightness(0.9);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
 }
 
 /* Histórico e outros */
