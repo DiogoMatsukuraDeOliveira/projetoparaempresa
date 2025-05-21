@@ -4,15 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro de Cambios</title>
-  <!-- Fonte suave opcional -->
+  <!-- Fonte Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/styles.css">
+  <!-- JS com defer garante que o DOM já exista antes de executar -->
+  <script src="./javascript/index.js" defer></script>
 </head>
 <body>
   <div class="container">
-    
     <header class="header">
       <div class="topo-icone">
         <a href="admin.html">
@@ -21,11 +23,9 @@
       </div>
       <h1>Cadastro de Cambios</h1>
     </header>
-    
     <main>
       <section class="card">
         <form id="dataForm" class="form-grid">
-          
           <div class="form-group">
             <label for="name">Nome</label>
             <select id="name" required>
@@ -37,10 +37,9 @@
               <option value="Alisson">Alisson</option>
             </select>
           </div>
-          
           <div class="form-group">
             <label for="model">Modelo</label>
-            <select id="model" onchange="checkModel(this)" required>
+            <select id="model" required>
               <option value="" disabled selected>Selecione o modelo</option>
               <option value="G5-1.6">G5 1.6</option>
               <option value="Fire-1.4">Fire 1.4</option>
@@ -50,22 +49,18 @@
               <option value="Outro">Outro</option>
             </select>
           </div>
-          
           <div class="form-group form-group-full" id="modelOther" style="display:none;">
             <label for="modelOtherInput">Especifique o Modelo</label>
             <input type="text" id="modelOtherInput" placeholder="Digite o modelo">
           </div>
-          
           <div class="form-group">
             <label for="date">Data</label>
             <input type="date" id="date" required>
           </div>
-          
           <div class="form-group">
             <label for="photo">Foto</label>
             <input type="file" id="photo" accept="image/*" required>
           </div>
-          
           <div class="form-actions form-group-full">
             <button type="submit" class="btn btn-primary">Cadastrar</button>
             <button type="button" class="btn btn-secondary history-btn"
@@ -73,12 +68,9 @@
               Acessar Histórico
             </button>
           </div>
-          
         </form>
       </section>
     </main>
-    
   </div>
-  <script src="javascript/index.js"></script>
 </body>
 </html>
