@@ -1,25 +1,34 @@
-/* Reset básico e fonte */
-html, body {
-  height: 100%;
+/* ==== Reset básico e fonte ==== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+html {
   font-family: 'Inter', sans-serif;
   background-color: #f9f9f9;
   color: #333;
-  display: flex;
-  align-items: center;    /* centra verticalmente */
-  justify-content: center;/* centra horizontalmente */
 }
 
-/* Container centralizado */
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ==== Container centralizado horizontalmente ==== */
 .container {
   width: 95%;
   max-width: 500px;
+  margin: 20px auto;
   padding: 20px;
 }
 
-/* Header */
+/* ==== Header ==== */
 .header {
   display: flex;
   flex-direction: column;
@@ -33,21 +42,20 @@ html, body {
 }
 
 h1 {
-  margin: 0;
   font-size: 26px;
-  text-align: center;
   color: #222;
+  text-align: center;
 }
 
-/* Card */
+/* ==== Card ==== */
 .card {
   background: #fff;
-  padding: 20px;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  padding: 20px;
 }
 
-/* Formulário */
+/* ==== Formulário ==== */
 .form-grid {
   display: flex;
   flex-direction: column;
@@ -72,6 +80,7 @@ select,
 input[type="date"],
 input[type="file"],
 input[type="text"] {
+  width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -86,7 +95,7 @@ input:focus {
   outline: none;
 }
 
-/* Botões */
+/* ==== Botões ==== */
 .form-actions {
   display: flex;
   flex-direction: column;
@@ -94,62 +103,56 @@ input:focus {
 }
 
 .btn {
+  width: 100%;
   padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
-  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s;
+  transition: filter 0.2s, transform 0.1s;
 }
 
 .btn-primary {
   background-color: #007bff;
-  color: white;
+  color: #fff;
 }
-
 .btn-primary:hover,
 .btn-primary:focus {
   filter: brightness(0.9);
 }
-
 .btn-primary:active {
   transform: scale(0.98);
 }
 
 .btn-secondary {
   background-color: #4caf50;
-  color: white;
+  color: #fff;
 }
-
 .btn-secondary:hover,
 .btn-secondary:focus {
   filter: brightness(0.9);
 }
-
 .btn-secondary:active {
   transform: scale(0.98);
 }
 
-/* Histórico e outros */
+/* ==== Histórico ==== */
 #historyList {
   margin-top: 20px;
   max-height: 400px;
   overflow-y: auto;
 }
-
 #historyList div {
   background-color: #fafafa;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 10px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
-
 #historyList div p {
   margin: 5px 0;
 }
-
 #historyList div img {
   max-width: 100px;
   max-height: 100px;
@@ -161,7 +164,6 @@ input:focus {
   gap: 10px;
   justify-content: center;
 }
-
 .action-buttons button {
   background: transparent;
   border: none;
@@ -170,29 +172,26 @@ input:focus {
   border-radius: 50%;
   transition: background-color 0.2s;
 }
-
 .action-buttons button:hover {
   background-color: #eee;
 }
-
 .edit-btn:hover {
   color: #ffa500;
 }
-
 .delete-btn:hover {
   color: #ff6347;
 }
 
-/* Responsivo */
+/* ==== Responsividade ==== */
 @media (max-width: 768px) {
   h1 {
     font-size: 24px;
   }
-
-  select, input, label {
+  select,
+  input,
+  label {
     font-size: 15px;
   }
-
   .btn {
     font-size: 15px;
   }
@@ -202,18 +201,16 @@ input:focus {
   h1 {
     font-size: 22px;
   }
-
-  select, input, label {
+  select,
+  input,
+  label {
     font-size: 14px;
   }
-
   .btn {
     font-size: 14px;
     padding: 12px;
   }
-
   .form-actions {
-    flex-direction: column;
     gap: 8px;
   }
 }
