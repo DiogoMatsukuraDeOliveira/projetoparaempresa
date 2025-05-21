@@ -53,7 +53,8 @@ h1 {
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  /* gap padrão para desktop/tablet */
+  gap: clamp(8px, 2.5vw, 20px);
 }
 .form-group {
   display: flex;
@@ -88,7 +89,8 @@ input:focus {
 .form-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap padrão para desktop/tablet */
+  gap: clamp(6px, 3vw, 16px);
 }
 .btn {
   width: 100%;
@@ -183,6 +185,13 @@ input:focus {
 }
 
 @media (max-width: 480px) {
+  /* gap maior no celular conforme seu clamp desejado */
+  .form-grid {
+    gap: clamp(16px, 5vw, 40px);
+  }
+  .form-actions {
+    gap: clamp(12px, 5vw, 32px);
+  }
   h1 {
     font-size: 22px;
   }
@@ -194,8 +203,5 @@ input:focus {
   .btn {
     font-size: 14px;
     padding: 12px;
-  }
-  .form-actions {
-    gap: 8px;
   }
 }
