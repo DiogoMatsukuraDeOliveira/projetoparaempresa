@@ -16,8 +16,15 @@
 
   <!-- Formulário de Senha -->
   <div id="passwordForm">
-    <label for="password">Digite a senha para acessar o histórico:</label>
-    <input type="password" id="password" required>
+     <label for="password">Digite a senha para acessar o histórico:</label>
+    <input 
+      type="password" 
+      id="password" 
+      name="password" 
+      placeholder="Senha"
+      autocomplete="current-password"
+      required
+    >
     <div id="buttonContainer">
       <button id="backBtn" onclick="window.location.href='index.html'">Voltar</button>
       <button id="enterBtn">Entrar</button>

@@ -101,7 +101,14 @@
     <div class="login-container">
         <h2>Por favor, insira a senha para acessar a planilha</h2>
         <form id="loginForm">
-            <input type="password" id="password" placeholder="Senha" required>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Senha" 
+                autocomplete="current-password" 
+                required
+            >
             <div class="button-container">
                 <button type="button" id="backButton" onclick="window.location.href='index.html'">Voltar</button>
                 <button id="enterBtn">Entrar</button>
