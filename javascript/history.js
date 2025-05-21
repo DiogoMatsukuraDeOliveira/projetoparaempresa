@@ -15,67 +15,70 @@ const filters     = document.getElementById('filters');
 const historyCont = document.getElementById('historyContent');
 const toggleBtn   = document.getElementById('toggleFiltersBtn');
 
+// IDs de filtro para facilitar iterações
+const filterIds = ['yearFilter','monthFilter','dayFilter','modelFilter'];
+
+// Evento de login
 document.getElementById('enterBtn').addEventListener('click', () => {
   const pw   = document.getElementById('password').value.trim();
   const name = senhas[pw];
-  if (!name) {
-    alert('Senha incorreta!');
-    return;
-  }
+  if (!name) { alert('Senha incorreta!'); return; }
   currentUser = name;
 
-  // 1) adiciona classe que centraliza 'topo'
+  // Ajusta visibilidade
   document.body.classList.add('logged-in');
+  backGlobal.style.display  = 'block';
+  pwForm.style.display      = 'none';
+  toggleCont.style.display  = 'block';
+  historyCont.style.display = 'block';
 
-  // 2) exibe o botão global e esconde o form de senha
-  backGlobal.style.display       = 'block';
-  pwForm.style.display           = 'none';
-  toggleCont.style.display       = 'block';
-  historyCont.style.display      = 'block';
-  filters.style.display          = 'none';
-  toggleBtn.textContent          = 'Mostrar Filtros';
-
-  // toggle de filtros
+  // Toggle de exibição de filtros
   toggleBtn.onclick = () => {
     if (filters.style.display === 'flex') {
-      filters.style.display    = 'none';
-      toggleBtn.textContent    = 'Mostrar Filtros';
+      filters.style.display = 'none';
+      toggleBtn.textContent = 'Mostrar Filtros';
     } else {
-      filters.style.display    = 'flex';
-      toggleBtn.textContent    = 'Ocultar Filtros';
+      filters.style.display = 'flex';
+      toggleBtn.textContent = 'Ocultar Filtros';
     }
   };
 
-  // listeners de filtros
-  ['yearFilter','monthFilter','dayFilter','modelFilter']
-    .forEach(id => document.getElementById(id)
-      .addEventListener('change', loadUserHistory));
+  // Adiciona event listeners nos filtros, se existirem
+  filterIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', loadUserHistory);
+  });
 
+  // Carrega histórico inicial
   loadUserHistory();
 });
 
+// Carrega e filtra histórico
 function loadUserHistory() {
   const history = JSON.parse(localStorage.getItem('history')) || [];
   const yf = document.getElementById('yearFilter').value;
   const mf = document.getElementById('monthFilter').value;
   const df = document.getElementById('dayFilter').value;
-  const mod= document.getElementById('modelFilter').value;
+  const mod = document.getElementById('modelFilter').value;
 
   let filtered = history.filter(e => {
     const [y,m,d] = e.date.split('-');
     return (!yf || y===yf)
         && (!mf || m===mf)
         && (!df || d===df)
-        && (!mod || e.model===mod);
+        && (!mod|| e.model===mod);
   });
 
-  if (currentUser !== 'admin') {
+  // Restringe a usuários não-admin
+  if (currentUser !== 'admin')
     filtered = filtered.filter(e => e.name === currentUser);
-  }
-  filtered.sort((a,b)=> a.model.localeCompare(b.model));
+
+  // Inverte a ordem: último fica em cima
+  filtered.reverse();
   renderHistoryList(filtered);
 }
 
+// Renderiza lista com setas de primeiro e último
 function renderHistoryList(list) {
   const container = document.getElementById('historyList');
   container.innerHTML = '';
@@ -83,6 +86,14 @@ function renderHistoryList(list) {
     container.innerHTML = '<p>Nenhum item encontrado.</p>';
     return;
   }
+
+  // Label de início
+  const firstLabel = document.createElement('div');
+  firstLabel.className = 'arrow-label';
+  firstLabel.textContent = '⬆ Primeiro';
+  container.appendChild(firstLabel);
+
+  // Entradas
   list.forEach(e => {
     const div = document.createElement('div');
     div.className = 'history-entry';
@@ -94,4 +105,10 @@ function renderHistoryList(list) {
     `;
     container.appendChild(div);
   });
+
+  // Label de fim
+  const lastLabel = document.createElement('div');
+  lastLabel.className = 'arrow-label';
+  lastLabel.textContent = 'Último ⬇';
+  container.appendChild(lastLabel);
 }

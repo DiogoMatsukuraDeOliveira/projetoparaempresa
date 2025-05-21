@@ -5,31 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Histórico de Cambios</title>
   <link rel="stylesheet" href="css/history.css">
+  <style>
+    /* Estilo para setas e labels de primeiro/último */
+    .arrow-label {
+      text-align: center;
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+    /* Layout dos filtros quando visíveis */
+    #filters {
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    #filters label, #filters select {
+      flex: 1 1 120px;
+    }
+  </style>
 </head>
 <body>
   <h1>Histórico de Cambios</h1>
 
-  <!-- Botão Voltar fixo no canto, só depois do login -->
-  <button id="globalBackBtn" onclick="window.location.href='index.html'">
+  <!-- Botão Voltar fixo -->
+  <button id="globalBackBtn" onclick="window.location.href='index.html'" style="display:none; position:fixed; top:10px; left:10px;">
     ← Voltar
   </button>
 
-  <!-- Formulário de Senha -->
+  <!-- Seção de login -->
   <div id="passwordForm">
     <label for="password">Digite a senha para acessar o histórico:</label>
     <input type="password" id="password" required>
     <div id="buttonContainer">
       <button id="backBtn" onclick="window.location.href='index.html'">Voltar</button>
-      <button id="enterBtn">Entrar</button>
+      <button id="enterBtn" type="button">Entrar</button>
     </div>
   </div>
 
-  <!-- Botão para mostrar/ocultar filtros (após login) -->
-  <div id="toggleFiltersContainer">
+  <!-- Toggle de filtros -->
+  <div id="toggleFiltersContainer" style="display:none; margin:10px 0;">
     <button id="toggleFiltersBtn">Mostrar Filtros</button>
   </div>
 
-  <!-- Filtros (inicialmente escondidos) -->
+  <!-- Filtros -->
   <div id="filters">
     <label for="yearFilter">Ano:</label>
     <select id="yearFilter">
@@ -58,7 +77,6 @@
     <label for="dayFilter">Dia:</label>
     <select id="dayFilter">
       <option value="">Todos</option>
-      <!-- 1 a 31 -->
       <option value="01">1</option>
       <option value="02">2</option>
       <option value="03">3</option>
@@ -105,7 +123,7 @@
   </div>
 
   <!-- Conteúdo do Histórico -->
-  <div id="historyContent">
+  <div id="historyContent" style="display:none;">
     <h2>Conteúdo do Histórico</h2>
     <div id="historyList"></div>
   </div>
