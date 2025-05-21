@@ -27,8 +27,14 @@ function saveToLocalStorage(entry) {
   localStorage.setItem('history', JSON.stringify(history));
 }
 
-// Lida com clique em Cadastrar
-function handleFormSubmit() {
+// Lida com clique ou toque em Cadastrar
+function handleFormSubmit(event) {
+  // Em eventos touchend, o event.target pode não ser o botão,
+  // então prevenimos o padrão apenas quando disponível
+  if (event && typeof event.preventDefault === 'function') {
+    event.preventDefault();
+  }
+
   const name = document.getElementById('name').value;
   const modelSelect = document.getElementById('model').value;
   const model = modelSelect === 'Outro'
@@ -57,8 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
   setDateToToday();
   document.getElementById('model')
     .addEventListener('change', e => checkModel(e.target));
-  document.getElementById('submitBtn')
-    .addEventListener('click', handleFormSubmit);
+
+  const submitBtn = document.getElementById('submitBtn');
+  // Suporta tanto clique quanto toque no iOS
+  submitBtn.addEventListener('click', handleFormSubmit);
+  submitBtn.addEventListener('touchend', handleFormSubmit);
+
   document.getElementById('historyBtn')
     .addEventListener('click', () => window.location.href = '/history.html');
 });
