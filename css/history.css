@@ -84,7 +84,7 @@ h1 {
 }
 #backBtn {
   flex: 1;
-  background: var(--danger);
+  background-color: var(--danger);
   color: #fff;
   border: none;
   border-radius: var(--radius);
@@ -92,10 +92,20 @@ h1 {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: background-color 0.2s, transform 0.1s;
 }
-#backBtn:hover { background: var(--danger-dark); }
-#backBtn:active { transform: scale(0.98); }
+
+/* hover/focus juntos, e com color explícito */
+#backBtn:hover,
+#backBtn:focus {
+  filter: brightness(0.7); /* escurece em 10% */
+}
+
+/* ativo */
+#backBtn:active {
+  transform: scale(0.98);
+}
+
 
 #enterBtn {
   flex: 1;
@@ -176,6 +186,15 @@ h1 {
   margin-top: 8px; border-radius: 4px;
   width: 100px; height: auto;
 }
+
+.history-label {
+  text-align: center;
+  font-weight: 600;
+  color: #555;
+  margin: 12px 0;
+  font-size: 0.95rem;
+}
+
 
 /* ====== Responsivo Desktop ====== */
 @media (min-width: 768px) {
