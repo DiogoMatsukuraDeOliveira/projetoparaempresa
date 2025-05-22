@@ -29,7 +29,7 @@
         <form id="dataForm" class="form-grid" novalidate>
           <div class="form-group">
             <label for="name">Nome</label>
-            <select id="name">
+            <select id="name" required>
               <option value="" disabled selected>Selecione o nome</option>
               <option value="Tiozinho">Tiozinho</option>
               <option value="Bruninho">Bruninho</option>
@@ -40,7 +40,7 @@
           </div>
           <div class="form-group">
             <label for="model">Modelo</label>
-            <select id="model">
+            <select id="model" required>
               <option value="" disabled selected>Selecione o modelo</option>
               <option value="G5-1.6">G5 1.6</option>
               <option value="Fire-1.4">Fire 1.4</option>
@@ -56,14 +56,15 @@
           </div>
           <div class="form-group">
             <label for="date">Data</label>
-            <input type="date" id="date">
+            <input type="date" id="date" required>
           </div>
           <div class="form-group">
             <label for="photo">Foto</label>
-            <input type="file" id="photo" accept="image/*" capture>
+            <input type="file" id="photo" accept="image/*" capture required>
           </div>
           <div class="form-actions form-group-full">
-            <button type="button" id="submitBtn" class="btn btn-primary">Cadastrar</button>
+            <!-- Aqui é submit -->
+            <button type="submit" id="submitBtn" class="btn btn-primary">Cadastrar</button>
             <button type="button" id="historyBtn" class="btn btn-secondary">Acessar Histórico</button>
           </div>
         </form>
