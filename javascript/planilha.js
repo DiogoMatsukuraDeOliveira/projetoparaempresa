@@ -2,25 +2,30 @@ let currentPage = 1;
 const entriesPerPage = 5;
 
 function loadHistory() {
-  const history = JSON.parse(localStorage.getItem('history')) || [];
-  const indexed = history.map((entry, idx) => ({ ...entry, __idx: idx }));
+  // Pega o array original e inverte
+  const raw = JSON.parse(localStorage.getItem('history')) || [];
+  const history = raw.slice().reverse();
+
+  // Indexação ajustada para gravar warranty de volta em `raw`
+  const indexed = history.map((entry, idx) => ({
+    ...entry,
+    __idx: raw.length - 1 - idx
+  }));
 
   // lê filtros
   const nameVal = document.getElementById('filterName').value;
-
   let modelVal = document.getElementById('filterModel').value;
   const modelOther = document.getElementById('filterModelOther').value.trim();
-  if (modelVal === 'Outro') modelVal = modelOther ? modelOther : '';
+  if (modelVal === 'Outro') modelVal = modelOther || '';
 
   const dayVal   = document.getElementById('filterDay').value;
   const monthVal = document.getElementById('filterMonth').value;
   const yearVal  = document.getElementById('filterYear').value;
-
   const fDay   = dayVal   ? parseInt(dayVal,   10) : null;
   const fMonth = monthVal ? parseInt(monthVal, 10) : null;
   const fYear  = yearVal  ? parseInt(yearVal,  10) : null;
 
-  // aplica filtros (case-insensitive e parcial no modelo)
+  // aplica filtros
   const filtered = indexed.filter(item => {
     const [y,m,d] = item.date.split('-').map(Number);
     const okName  = nameVal  ? item.name  === nameVal  : true;
@@ -39,7 +44,7 @@ function loadHistory() {
   const start = (currentPage - 1) * entriesPerPage;
   const pageData = filtered.slice(start, start + entriesPerPage);
 
-  // renderiza
+  // renderiza tabela
   const tbody = document.querySelector('#historyTable tbody');
   tbody.innerHTML = '';
   pageData.forEach((item, i) => {
@@ -55,13 +60,14 @@ function loadHistory() {
     const chk = tr.querySelector('.warranty-checkbox');
     chk.checked = !!item.warranty;
     chk.addEventListener('change', () => {
-      history[item.__idx].warranty = chk.checked;
-      localStorage.setItem('history', JSON.stringify(history));
+      // atualiza no raw usando __idx
+      raw[item.__idx].warranty = chk.checked;
+      localStorage.setItem('history', JSON.stringify(raw));
     });
     tbody.appendChild(tr);
   });
 
-  document.getElementById('pageNumber').textContent = 
+  document.getElementById('pageNumber').textContent =
     `Página ${currentPage} de ${totalPages}`;
   document.getElementById('prevPage').disabled = currentPage === 1;
   document.getElementById('nextPage').disabled = currentPage === totalPages;
@@ -83,30 +89,36 @@ function removeById() {
   loadHistory();
 }
 
-// mostrar/ocultar campo "Outro"
+// mostrar/ocultar campo "Outro" nos filtros
 const filterModel = document.getElementById('filterModel');
 const otherCont = document.getElementById('filterModelOtherContainer');
 const filterModelOther = document.getElementById('filterModelOther');
+
 filterModel.addEventListener('change', () => {
-  if (filterModel.value === 'Outro') otherCont.style.display = 'block';
-  else {
+  if (filterModel.value === 'Outro') {
+    otherCont.style.display = 'block';
+  } else {
     otherCont.style.display = 'none';
     filterModelOther.value = '';
   }
 });
 
-// disparar filtros ao mudar/editar qualquer campo
+// dispara filtros ao mudar qualquer campo
 ['filterName','filterModel','filterDay','filterMonth','filterYear']
-  .forEach(id => document.getElementById(id)
-    .addEventListener('change', () => {
-      currentPage = 1; loadHistory();
-    })
+  .forEach(id =>
+    document.getElementById(id)
+      .addEventListener('change', () => {
+        currentPage = 1;
+        loadHistory();
+      })
   );
+
 filterModelOther.addEventListener('input', () => {
-  currentPage = 1; loadHistory();
+  currentPage = 1;
+  loadHistory();
 });
 
-// => **novo**: botão que limpa todos os filtros
+// botão para limpar todos os filtros
 document.getElementById('clearFiltersBtn')
   .addEventListener('click', () => {
     document.getElementById('filterName').value = '';
@@ -121,7 +133,10 @@ document.getElementById('clearFiltersBtn')
   });
 
 // paginação
-document.getElementById('prevPage').addEventListener('click', () => changePage('prev'));
-document.getElementById('nextPage').addEventListener('click', () => changePage('next'));
+document.getElementById('prevPage')
+  .addEventListener('click', () => changePage('prev'));
+document.getElementById('nextPage')
+  .addEventListener('click', () => changePage('next'));
 
+// carrega ao iniciar
 window.onload = loadHistory;
