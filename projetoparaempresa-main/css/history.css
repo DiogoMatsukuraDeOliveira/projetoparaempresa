@@ -1,0 +1,208 @@
+/* ====== Variáveis e Reset ====== */
+:root {
+  --bg-light: #f4f4f4;
+  --bg-white: #ffffff;
+  --border: #ccc;
+  --text: #333;
+  --primary: #007bff;
+  --primary-dark: #0056b3;
+  --danger: #f44336;
+  --radius: 8px;
+  --font: Arial, sans-serif;
+}
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  background: var(--bg-light);
+  font-family: var(--font);
+  color: var(--text);
+}
+img, input, select, button {
+  max-width: 100%; display: block;
+}
+
+/* ====== Corpo da página ====== */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* centraliza verticalmente no login */
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+}
+body.logged-in {
+  justify-content: flex-start; /* após login, empilha do topo */
+  padding-top: 64px;           /* espaço para o botão global */
+}
+h1 {
+  font-size: 1.75rem;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* ====== Botão Voltar Global ====== */
+#globalBackBtn {
+  position: fixed;
+  top: 12px; left: 12px;
+  display: none; /* só após login */
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background 0.2s;
+}
+#globalBackBtn:hover {
+  background: var(--danger);
+}
+
+/* ====== Formulário de Senha ====== */
+#passwordForm {
+  background: var(--bg-white);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 100%; max-width: 360px;
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 16px;
+}
+#passwordForm label { font-size: 1rem; }
+#passwordForm input {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+#buttonContainer {
+  display: flex; gap: 12px;
+}
+#backBtn {
+  flex: 1;
+  background-color: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* hover/focus juntos, e com color explícito */
+#backBtn:hover,
+#backBtn:focus {
+  filter: brightness(0.7); /* escurece em 10% */
+}
+
+/* ativo */
+#backBtn:active {
+  transform: scale(0.98);
+}
+
+
+#enterBtn {
+  flex: 1;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+#enterBtn:hover { background: var(--primary-dark); }
+#enterBtn:active { transform: scale(0.98); }
+
+/* ====== Toggle de Filtros ====== */
+#toggleFiltersContainer {
+  display: none; /* revelado pelo JS */
+  margin: 16px auto;
+}
+#toggleFiltersBtn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#toggleFiltersBtn:hover { background: var(--primary-dark); }
+
+/* ====== Seção de Filtros ====== */
+#filters {
+  display: none; /* revelado pelo JS */
+  flex-direction: column; gap: 12px;
+  width: 100%; max-width: 360px;
+  margin: 0 auto;
+  background: var(--bg-white);
+  padding: 20px; border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  align-items: center;
+}
+#filters label { font-size: 1rem; }
+#filters select {
+  width: 100%; padding: 12px; font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* ====== Conteúdo do Histórico ====== */
+#historyContent {
+  display: none; /* revelado pelo JS */
+  width: 100%; max-width: 800px;
+  margin: 24px auto 0;
+}
+#historyContent h2 {
+  text-align: center; margin-bottom: 16px;
+}
+
+/* ====== Lista de Registros ====== */
+#historyList {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 0 16px;
+}
+.history-entry {
+  background: var(--bg-white);
+  width: 100%; max-width: 600px;
+  padding: 16px; border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex; flex-direction: column; align-items: center;
+}
+.history-entry p {
+  text-align: center; margin: 6px 0; font-size: 0.95rem;
+}
+.history-entry img {
+  margin-top: 8px; border-radius: 4px;
+  width: 100px; height: auto;
+}
+
+.history-label {
+  text-align: center;
+  font-weight: 600;
+  color: #555;
+  margin: 12px 0;
+  font-size: 0.95rem;
+}
+
+
+/* ====== Responsivo Desktop ====== */
+@media (min-width: 768px) {
+  h1 { font-size: 2rem; }
+  #passwordForm, #filters, #toggleFiltersContainer {
+    max-width: 480px;
+  }
+  #historyContent {
+    max-width: 800px;
+  }
+}

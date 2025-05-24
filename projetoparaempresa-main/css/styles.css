@@ -1,0 +1,207 @@
+/* ==== Reset básico e fonte ==== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* ==== Container centralizado horizontalmente ==== */
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+/* ==== Header ==== */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.topo-icone img {
+  width: 50px;
+  height: 50px;
+}
+h1 {
+  font-size: 26px;
+  color: #222;
+  text-align: center;
+}
+
+/* ==== Card ==== */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* ==== Formulário ==== */
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  /* gap padrão para desktop/tablet */
+  gap: clamp(8px, 2.5vw, 20px);
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group-full {
+  width: 100%;
+}
+label {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+select,
+input[type="date"],
+input[type="file"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+select:focus,
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* ==== Botões ==== */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  /* gap padrão para desktop/tablet */
+  gap: clamp(6px, 3vw, 16px);
+}
+.btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+}
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  filter: brightness(0.9);
+}
+.btn-primary:active {
+  transform: scale(0.98);
+}
+.btn-secondary {
+  background-color: #4caf50;
+  color: #fff;
+}
+.btn-secondary:hover,
+.btn-secondary:focus {
+  filter: brightness(0.9);
+}
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+/* ==== Histórico ==== */
+#historyList {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+#historyList div {
+  background-color: #fafafa;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+#historyList div p {
+  margin: 5px 0;
+}
+#historyList div img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+}
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.action-buttons button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+.action-buttons button:hover {
+  background-color: #eee;
+}
+.edit-btn:hover {
+  color: #ffa500;
+}
+.delete-btn:hover {
+  color: #ff6347;
+}
+
+/* ==== Responsividade ==== */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+  select,
+  input,
+  label {
+    font-size: 15px;
+  }
+  .btn {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* gap maior no celular conforme seu clamp desejado */
+  .form-grid {
+    gap: clamp(16px, 5vw, 40px);
+  }
+  .form-actions {
+    gap: clamp(12px, 5vw, 32px);
+  }
+  h1 {
+    font-size: 22px;
+  }
+  select,
+  input,
+  label {
+    font-size: 14px;
+  }
+  .btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
