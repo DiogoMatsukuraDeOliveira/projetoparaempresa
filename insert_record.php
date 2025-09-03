@@ -1,9 +1,15 @@
 <?php
 // insert_record.php
-require 'db.php';
+session_start();
+require __DIR__ . '/db.php';
+
+if (!isset($_SESSION['user_id'])) {
+  header('Location: login.php');
+  exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $user_id = $_POST['user_id'];
+  $user_id = $_SESSION['user_id']; // vem da sessão
 
   // Seleciona entre modelo padrão ou personalizado
   $model = $_POST['model'] === 'Outro' && !empty($_POST['model_other'])
@@ -12,15 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $date = $_POST['date'];
 
-  // Faz upload da foto
+  // Upload da foto
   $photoFilename = null;
   if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === 0) {
-    $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+    $ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
     $photoFilename = uniqid('img_') . ".$ext";
-    move_uploaded_file(
-      $_FILES['photo']['tmp_name'],
-      __DIR__ . "/uploads/$photoFilename"
-    );
+    // garanta que a pasta exista
+    if (!is_dir(__DIR__ . '/uploads')) { @mkdir(__DIR__ . '/uploads', 0775, true); }
+    move_uploaded_file($_FILES['photo']['tmp_name'], __DIR__ . "/uploads/$photoFilename");
   }
 
   // Insere no banco

@@ -1,154 +1,133 @@
 <?php
+// history.php — mostra o histórico do usuário logado (sem segundo login)
 session_start();
-require 'db.php';
+require __DIR__ . '/db.php';
 
-// → LOGIN DO FUNCIONÁRIO
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
-  $pw   = $_POST['password'];
-  $stmt = $conn->query("SELECT id,password FROM users WHERE role='user'");
-  foreach ($stmt->fetchAll() as $u) {
-    if (password_verify($pw, $u['password'])) {
-      $_SESSION['history_user'] = $u['id'];
-      header('Location: history.php');
-      exit;
-    }
-  }
-  $error = "Senha inválida";
+if (!isset($_SESSION['user_id'])) {
+  header('Location: login.php');
+  exit;
 }
 
-// se não logado, mostra form
-if (!isset($_SESSION['history_user'])): ?>
-  <!DOCTYPE html>
-  <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Histórico de Cambios</title>
-    <link rel="stylesheet" href="css/history.css">
-  </head>
-  <body>
-    <h1>Histórico de Cambios</h1>
-    <?php if (!empty($error)): ?>
-      <p class="error"><?= $error ?></p>
-    <?php endif; ?>
+$user_id  = $_SESSION['user_id'];
+$username = $_SESSION['username'] ?? 'Usuário';
 
-    <div id="passwordForm">
-      <label for="password">Digite a senha para acessar o histórico:</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Senha"
-        autocomplete="current-password"
-        required
-      >
-      <div id="buttonContainer">
-        <button id="backBtn" onclick="window.location.href='index.php'">Voltar</button>
-        <button id="enterBtn">Entrar</button>
-      </div>
-    </div>
-
-    <script src="javascript/history.js"></script>
-  </body>
-  </html>
-<?php exit; endif;
-
-// → JÁ AUTENTICADO: BUSCA REGISTROS
-$user_id = $_SESSION['history_user'];
 $stmt = $conn->prepare("
-  SELECT id, model, `date`, photo
+  SELECT id, model, `date`, photo, created_at
   FROM records
   WHERE user_id = :uid
   ORDER BY created_at DESC
 ");
 $stmt->execute([':uid' => $user_id]);
 $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// opções de filtros
+$years  = array_unique(array_map(fn($r)=>date('Y', strtotime($r['date'])), $records));
+sort($years);
+$models = array_unique(array_map(fn($r)=>$r['model'], $records));
+sort($models);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Histórico de Cambios</title>
-  <link rel="stylesheet" href="css/history.css">
+  <!-- cache-bust para evitar CSS antigo em cache -->
+  <link rel="stylesheet" href="/projetoparaempresa/css/history2.css?v=<?php echo time(); ?>">
 </head>
 <body>
-  <h1>Histórico de Cambios</h1>
-
-  <button id="globalBackBtn" onclick="window.location.href='index.php'">
-    ← Voltar
-  </button>
+  <header class="header">
+    <div class="left">
+      <button id="globalBackBtn" onclick="window.location.href='index.php'">← Voltar</button>
+      <h1>Histórico de Cambios</h1>
+    </div>
+    <div class="right">
+      <span class="hello">👋 <?= htmlspecialchars($username) ?></span>
+      <a class="logout" href="logout.php">Sair</a>
+    </div>
+  </header>
 
   <div id="toggleFiltersContainer">
     <button id="toggleFiltersBtn">Mostrar Filtros</button>
   </div>
 
-  <div id="filters" style="display:none;">
-    <label for="yearFilter">Ano:</label>
+  <section id="filters">
+    <label for="yearFilter">Ano</label>
     <select id="yearFilter">
       <option value="">Todos</option>
-      <?php 
-        $years = array_unique(array_map(fn($r)=>date('Y',strtotime($r['date'])),$records));
-        sort($years);
-        foreach($years as $y): ?>
-          <option value="<?= $y ?>"><?= $y ?></option>
+      <?php foreach ($years as $y): ?>
+        <option value="<?= $y ?>"><?= $y ?></option>
       <?php endforeach; ?>
     </select>
 
-    <label for="monthFilter">Mês:</label>
+    <label for="monthFilter">Mês</label>
     <select id="monthFilter">
       <option value="">Todos</option>
-      <?php for($m=1;$m<=12;$m++): 
-        $mv = str_pad($m,2,'0',STR_PAD_LEFT); ?>
-        <option value="<?= $mv ?>"><?= DateTime::createFromFormat('!m',$mv)->format('F') ?></option>
+      <?php for ($m=1; $m<=12; $m++):
+        $mv = str_pad($m, 2, '0', STR_PAD_LEFT);
+        $mn = DateTime::createFromFormat('!m', $mv)->format('F');
+      ?>
+        <option value="<?= $mv ?>"><?= $mn ?></option>
       <?php endfor; ?>
     </select>
 
-    <label for="dayFilter">Dia:</label>
+    <label for="dayFilter">Dia</label>
     <select id="dayFilter">
       <option value="">Todos</option>
-      <?php for($d=1;$d<=31;$d++):
-        $dv = str_pad($d,2,'0',STR_PAD_LEFT); ?>
+      <?php for ($d=1; $d<=31; $d++):
+        $dv = str_pad($d, 2, '0', STR_PAD_LEFT); ?>
         <option value="<?= $dv ?>"><?= $d ?></option>
       <?php endfor; ?>
     </select>
 
-    <label for="modelFilter">Modelo:</label>
+    <label for="modelFilter">Modelo</label>
     <select id="modelFilter">
       <option value="">Todos</option>
-      <?php 
-        $models = array_unique(array_map(fn($r)=>$r['model'],$records));
-        sort($models);
-        foreach($models as $m): ?>
-          <option value="<?= htmlspecialchars($m) ?>"><?= htmlspecialchars($m) ?></option>
+      <?php foreach ($models as $m): ?>
+        <option value="<?= htmlspecialchars($m) ?>"><?= htmlspecialchars($m) ?></option>
       <?php endforeach; ?>
     </select>
-  </div>
+  </section>
 
-  <div id="historyContent">
-    <h2>Conteúdo do Histórico</h2>
-    <div id="historyList">
-      <?php foreach($records as $r): 
-        $Y = date('Y', strtotime($r['date']));
-        $M = date('m', strtotime($r['date']));
-        $D = date('d', strtotime($r['date']));
-      ?>
-        <div class="history-item"
-             data-year="<?= $Y ?>"
-             data-month="<?= $M ?>"
-             data-day="<?= $D ?>"
-             data-model="<?= htmlspecialchars($r['model']) ?>">
-          <strong>#<?= $r['id'] ?></strong>
-          — <?= htmlspecialchars($r['model']) ?>
-          (<?= $r['date'] ?>)
-          <?php if($r['photo']): ?>
-            <img src="uploads/<?= $r['photo'] ?>" width="40">
-          <?php endif; ?>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
+  <main id="historyContent">
+    <h2>Conteúdo do Histórico (<?= count($records) ?>)</h2>
 
-  <script src="javascript/history.js"></script>
+    <?php if (empty($records)): ?>
+      <p class="empty">Nenhum registro encontrado para você ainda.</p>
+    <?php else: ?>
+      <div id="historyList">
+        <?php foreach ($records as $r):
+          $Y = date('Y', strtotime($r['date']));
+          $M = date('m', strtotime($r['date']));
+          $D = date('d', strtotime($r['date']));
+          $modelSafe = htmlspecialchars($r['model']);
+          $dateSafe  = htmlspecialchars($r['date']);
+        ?>
+          <div class="history-item"
+               data-year="<?= $Y ?>"
+               data-month="<?= $M ?>"
+               data-day="<?= $D ?>"
+               data-model="<?= $modelSafe ?>">
+
+            <div class="image-wrap">
+              <?php if (!empty($r['photo'])): ?>
+                <img src="uploads/<?= htmlspecialchars($r['photo']) ?>" alt="foto">
+              <?php else: ?>
+                <div class="no-photo">Sem foto</div>
+              <?php endif; ?>
+            </div>
+
+            <div class="meta">
+              <div class="id">#<?= (int)$r['id'] ?></div>
+              <div class="model"><?= $modelSafe ?></div>
+              <div class="date"><?= $dateSafe ?></div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+  </main>
+
+  <script src="/projetoparaempresa/javascript/history.js" defer></script>
 </body>
 </html>

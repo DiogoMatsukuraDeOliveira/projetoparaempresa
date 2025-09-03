@@ -1,8 +1,15 @@
 <?php
 // index.php
-require 'db.php';
-$stmt  = $conn->query("SELECT id, username FROM users WHERE role='user'");
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+session_start();
+require __DIR__ . '/db.php';
+
+if (!isset($_SESSION['user_id'])) {
+  header('Location: login.php');
+  exit;
+}
+
+// opcional: pegar nome para exibir no topo
+$username = $_SESSION['username'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -10,25 +17,25 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro de Cambios</title>
-  <!-- Fonte Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/index.css">
-  <!-- JS com defer -->
-  <script src="javascript/index.js" defer></script>
+  <link rel="stylesheet" href="/projetoparaempresa/css/styles.css">
+  <script src="/projetoparaempresa/javascript/index.js" defer></script>
 </head>
 <body>
   <div class="container">
     <header class="header">
       <div class="topo-icone">
-        <a href="admin.php">
-          <img src="img/icons8-administrador-masculino-50.png" alt="Administrador">
-        </a>
+        <a href="admin.php"><img src="img/icons8-administrador-masculino-50.png" alt="Administrador"></a>
       </div>
       <h1>Cadastro de Cambios</h1>
+      <div style="margin-left:auto;display:flex;gap:12px;align-items:center">
+        <span>👋 <?= htmlspecialchars($username) ?></span>
+        <a href="logout.php" class="btn btn-secondary">Sair</a>
+      </div>
     </header>
+
     <main>
       <section class="card">
         <form id="dataForm" class="form-grid"
@@ -37,17 +44,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
               enctype="multipart/form-data"
               novalidate>
 
-          <div class="form-group">
-            <label for="name">Nome</label>
-            <select id="name" name="user_id" required>
-              <option value="" disabled selected>Selecione o nome</option>
-              <?php foreach($users as $u): ?>
-                <option value="<?= $u['id'] ?>">
-                  <?= htmlspecialchars($u['username']) ?>
-                </option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+          <!-- REMOVIDO o campo Nome: o user vem da sessão -->
 
           <div class="form-group">
             <label for="model">Modelo</label>
@@ -86,7 +83,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
               Acessar Histórico
             </button>
           </div>
-
         </form>
       </section>
     </main>
